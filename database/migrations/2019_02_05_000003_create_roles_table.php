@@ -23,8 +23,10 @@ class CreateRolesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('role');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('name', 64);
+
+            $table->unique(["name"], 'roles_name_unique');
+            $table->nullableTimestamps();
         });
     }
 

@@ -23,8 +23,14 @@ class CreateServicesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('name')->nullable()->default(null);
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('name');
+            $table->unsignedInteger('cost');
+            $table->time('time_required');
+            $table->unsignedInteger('redo_distance')->nullable()->default(null);
+            $table->integer('cyclic')->default('0');
+
+            $table->unique(["name"], 'name_UNIQUE');
+            $table->nullableTimestamps();
         });
     }
 

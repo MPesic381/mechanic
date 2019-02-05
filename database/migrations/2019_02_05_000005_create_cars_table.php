@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAppointmentsTable extends Migration
+class CreateCarsTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'appointments';
+    public $tableName = 'cars';
 
     /**
      * Run the migrations.
-     * @table appointments
+     * @table cars
      *
      * @return void
      */
@@ -23,22 +23,22 @@ class CreateAppointmentsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->dateTime('datetime');
-            $table->unsignedInteger('users_id');
-            $table->unsignedInteger('cars_id');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('plate', 32);
+            $table->string('manufacturer', 64);
+            $table->string('model', 64);
+            $table->integer('year');
+            $table->unsignedInteger('distance');
+            $table->unsignedInteger('hp');
+            $table->unsignedInteger('cc');
+            $table->unsignedInteger('user_id');
 
-            $table->index(["cars_id"], 'fk_appointments_cars1_idx');
+            $table->index(["user_id"], 'fk_cars_users1_idx');
 
-            $table->index(["users_id"], 'fk_appointments_users1_idx');
+            $table->unique(["plate"], 'plate_UNIQUE');
+            $table->nullableTimestamps();
 
 
-            $table->foreign('cars_id', 'fk_appointments_cars1_idx')
-                ->references('id')->on('cars')
-                ->onDelete('no action')
-                ->onUpdate('no action');
-
-            $table->foreign('users_id', 'fk_appointments_users1_idx')
+            $table->foreign('user_id', 'fk_cars_users1_idx')
                 ->references('id')->on('users')
                 ->onDelete('no action')
                 ->onUpdate('no action');

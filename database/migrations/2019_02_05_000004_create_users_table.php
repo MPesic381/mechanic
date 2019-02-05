@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWorksTable extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'works';
+    public $tableName = 'users';
 
     /**
      * Run the migrations.
-     * @table works
+     * @table users
      *
      * @return void
      */
@@ -23,16 +23,21 @@ class CreateWorksTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('diagnose')->nullable()->default(null);
-            $table->text('note')->nullable()->default(null);
-            $table->unsignedInteger('appointments_id');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('name');
+            $table->string('email');
+            $table->timestamp('email_verified_at')->nullable()->default(null);
+            $table->string('password');
+            $table->rememberToken();
+            $table->unsignedInteger('role_id');
 
-            $table->index(["appointments_id"], 'fk_works_appointments1_idx');
+            $table->index(["role_id"], 'fk_users_roles_idx');
+
+            $table->unique(["email"], 'users_email_unique');
+            $table->nullableTimestamps();
 
 
-            $table->foreign('appointments_id', 'fk_works_appointments1_idx')
-                ->references('id')->on('appointments')
+            $table->foreign('role_id', 'fk_users_roles_idx')
+                ->references('id')->on('roles')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });

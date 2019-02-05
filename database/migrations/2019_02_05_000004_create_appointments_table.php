@@ -26,7 +26,9 @@ class CreateAppointmentsTable extends Migration
             $table->dateTime('datetime');
             $table->unsignedInteger('users_id');
             $table->unsignedInteger('cars_id');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+
 
             $table->index(["cars_id"], 'fk_appointments_cars1_idx');
 

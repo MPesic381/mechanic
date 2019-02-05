@@ -26,7 +26,9 @@ class CreateWorksTable extends Migration
             $table->string('diagnose')->nullable()->default(null);
             $table->text('note')->nullable()->default(null);
             $table->unsignedInteger('appointments_id');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+
 
             $table->index(["appointments_id"], 'fk_works_appointments1_idx');
 

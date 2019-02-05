@@ -12,8 +12,7 @@
     <div class="container marketing">
 
         <!-- START THE FEATURETTES -->
-
-        <hr class="featurette-divider">
+            <h1>@yield('title')</h1>
 
             @yield('content')
 

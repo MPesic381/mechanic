@@ -24,7 +24,8 @@ class CreateServicesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name')->nullable()->default(null);
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

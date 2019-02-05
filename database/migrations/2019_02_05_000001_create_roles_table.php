@@ -24,7 +24,8 @@ class CreateRolesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('role');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

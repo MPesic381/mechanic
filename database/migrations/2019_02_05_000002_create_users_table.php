@@ -27,7 +27,8 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->string('password');
             $table->unsignedInteger('roles_id');
-            $table->timestamp('timestamps')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('created_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->index(["roles_id"], 'fk_users_roles_idx');
 

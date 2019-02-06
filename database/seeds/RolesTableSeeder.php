@@ -22,7 +22,7 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => $now
             ],
             [
-                'name' => 'customer',
+                'name' => 'client',
                 'created_at' => $now,
                 'updated_at' => $now
             ]

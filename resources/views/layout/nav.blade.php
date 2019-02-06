@@ -27,7 +27,7 @@
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="/cars">Your cars</a>
                             <a class="dropdown-item" href="#">Services</a>
-                            <a class="dropdown-item" href="#">Wfdflk</a>
+                            <a class="dropdown-item" href="logout">Logout</a>
                         </div>
                     </li>
                 </ul>

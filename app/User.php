@@ -50,14 +50,14 @@ class User extends Authenticatable
             abort(401, 'This action is unauthorized.');
     }
 
-    public function hasAnyRole($roles)
+    private function hasAnyRole($roles)
     {
-        return null !== $this->role()->whereIn('name', $roles)->first();
+        return null === $this->role()->whereIn('name', $roles)->first();
     }
 
 
-    public function hasRole($role)
+    private function hasRole($role)
     {
-        return null !== $this->roles()->where(‘name’, $role)->first();
+        return null === $this->role()->where('name', $role)->first();
     }
 }

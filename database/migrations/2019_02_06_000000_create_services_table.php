@@ -26,7 +26,6 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->unsignedInteger('cost');
             $table->time('time_required');
-            $table->unsignedInteger('redo_distance')->nullable()->default(null);
             $table->integer('cyclic')->default('0');
 
             $table->unique(["name"], 'name_UNIQUE');

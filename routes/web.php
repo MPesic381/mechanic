@@ -11,6 +11,8 @@
 |
 */
 
+use App\Role;
+
 Route::get('/', function () {
     return view('index');
 });
@@ -21,3 +23,5 @@ Route::post('/register', 'UsersController@store');
 Route::get('/login', 'SessionsController@create');
 Route::post('/login', 'SessionsController@store');
 Route::get('/logout', 'SessionsController@destroy');
+
+Route::resource('cars', 'CarsController');

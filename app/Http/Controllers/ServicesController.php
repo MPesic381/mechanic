@@ -34,6 +34,8 @@ class ServicesController extends Controller
      */
     public function create()
     {
+        auth()->user()->authorizedRoles('admin');
+
         return view('services.create');
     }
 
@@ -67,7 +69,11 @@ class ServicesController extends Controller
      */
     public function edit($id)
     {
-        //
+        auth()->user()->authorizedRoles('admin');
+
+        $service = Service::findOrFail($id);
+
+        return view('services.edit')->withService($service);
     }
 
     /**
@@ -90,6 +96,12 @@ class ServicesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        auth()->user()->authorizedRoles('admin');
+
+        Service::destroy($id);
+
+        session()->flash('message', 'You have deleted one record');
+
+        return back();
     }
 }

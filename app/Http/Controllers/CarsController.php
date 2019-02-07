@@ -16,14 +16,13 @@ class CarsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        $request->user()->authorizedRoles('client');
+        auth()->user()->authorizedRoles('client');
 
-        $cars = Car::where('user_id', auth()->user()->id)->get();
+        $cars = auth()->user()->cars()->get();
 
         return view('cars.index')->withCars($cars);
     }
@@ -41,12 +40,28 @@ class CarsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $attributes = $request->validate([
+            'plate' => 'required|min:3|max:10',
+            'manufacturer' => 'required|max:30',
+            'model' => 'required|max:30',
+            'year' => 'required|integer|between:1980,2019|',
+            'kilometrage' => 'required|integer|between:1,500000',
+            'hp' => 'required|integer|between:10,999',
+            'cc' => 'required|integer|between:50,7000'
+        ]);
 
+        auth()->user()->cars()->save(
+            new Car($attributes)
+        );
+
+        session()->flash('message', 'You successfully inserted new car');
+
+        return redirect('/cars');
     }
 
     /**
@@ -57,7 +72,11 @@ class CarsController extends Controller
      */
     public function show($id)
     {
-        //
+        auth()->user()->authorizedRoles('client');
+
+        $car = Car::findOrFail($id);
+
+        return view('cars.show')->withCar($car);
     }
 
     /**
@@ -68,7 +87,11 @@ class CarsController extends Controller
      */
     public function edit($id)
     {
-        //
+        auth()->user()->authorizedRoles('client');
+
+        $car = Car::findOrFail($id);
+
+        return view('cars.edit')->withCar($car);
     }
 
     /**
@@ -80,7 +103,23 @@ class CarsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        auth()->user()->authorizedRoles('client');
+
+        $attributes = $request->validate([
+            'plate' => 'required|min:3|max:10',
+            'manufacturer' => 'required|max:30',
+            'model' => 'required|max:30',
+            'year' => 'required|integer|between:1980,2019|',
+            'kilometrage' => 'required|integer|between:1,500000',
+            'hp' => 'required|integer|between:10,999',
+            'cc' => 'required|integer|between:50,7000'
+        ]);
+
+        auth()->user()->cars()->find($id)->update($attributes);
+
+        session()->flash('message', 'Car successfully updated');
+
+        return redirect('/cars');
     }
 
     /**
@@ -91,6 +130,12 @@ class CarsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        auth()->user()->authorizedRoles('client');
+
+        auth()->user()->cars()->find($id)->delete();
+
+        session()->flash('message', 'Car successfully deleted');
+
+        return back();
     }
 }

@@ -27,7 +27,7 @@ class CreateCarsTable extends Migration
             $table->string('manufacturer', 64);
             $table->string('model', 64);
             $table->integer('year');
-            $table->unsignedInteger('distance');
+            $table->unsignedInteger('kilometrage');
             $table->unsignedInteger('hp');
             $table->unsignedInteger('cc');
             $table->unsignedInteger('user_id');

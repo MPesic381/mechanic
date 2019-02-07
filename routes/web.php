@@ -25,3 +25,4 @@ Route::post('/login', 'SessionsController@store');
 Route::get('/logout', 'SessionsController@destroy');
 
 Route::resource('cars', 'CarsController');
+Route::resource('services', 'ServicesController');

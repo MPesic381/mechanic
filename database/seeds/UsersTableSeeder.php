@@ -20,14 +20,14 @@ class UsersTableSeeder extends Seeder
         $admin->name = 'Admin';
         $admin->email = 'admin@mechanic.com';
         $admin->password = bcrypt('admin');
-        $admin->save();
         $admin->role()->associate($role_admin);
+        $admin->save();
 
         $client = new User();
         $client->name = 'Abdul Dzabar';
         $client->email = 'dzabulani@habibi.com';
         $client->password = bcrypt('leskovac123');
-        $client->save();
         $client->role()->associate($role_client);
+        $client->save();
     }
 }

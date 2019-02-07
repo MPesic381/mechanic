@@ -52,12 +52,12 @@ class User extends Authenticatable
 
     private function hasAnyRole($roles)
     {
-        return null === $this->role()->whereIn('name', $roles)->first();
+        return null !== $this->role()->whereIn('name', $roles)->first();
     }
 
 
     private function hasRole($role)
     {
-        return null === $this->role()->where('name', $role)->first();
+        return null !== $this->role()->where('name', $role)->first();
     }
 }

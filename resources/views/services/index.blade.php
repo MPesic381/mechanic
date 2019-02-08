@@ -22,7 +22,7 @@
                 @foreach($services as $service)
                     <tr>
                         <td>{{ $service->name }}</td>
-                        <td>{{ $service->cyclic }} km</td>
+                        <td>{{ $service->warranty }} km</td>
                         <td>{{ $service->cost }} RSD</td>
                         <td>
                             <div class="btn-group">

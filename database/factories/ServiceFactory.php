@@ -7,7 +7,7 @@ $factory->define(App\Service::class, function (Faker $faker) {
         'name' => $faker->words($nb= 3, $asText = true),
         'cost' => $faker->biasedNumberBetween(100, 10000),
         'time_required' => $faker->time($format = 'H:i:s'),
-        'cyclic' => $faker->biasedNumberBetween(100, 10000)
+        'warranty' => $faker->biasedNumberBetween(100, 10000)
     ];
 });
 

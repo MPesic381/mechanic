@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Car;
 use Illuminate\Http\Request;
 
-class CarsController extends Controller
+class CarController extends Controller
 {
 
     public function __construct()
@@ -61,7 +61,7 @@ class CarsController extends Controller
 
         session()->flash('message', 'You successfully inserted new car');
 
-        return redirect('/cars');
+        return redirect()->route('cars.index');
     }
 
     /**
@@ -119,7 +119,7 @@ class CarsController extends Controller
 
         session()->flash('message', 'Car successfully updated');
 
-        return redirect('/cars');
+        return redirect()->route('cars.index');
     }
 
     /**

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Service;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class ServicesController extends Controller
+class ServiceController extends Controller
 {
 
     public function __construct()
@@ -47,7 +48,17 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        auth()->user()->authorizedRoles('admin');
+
+        $request->validate([
+            'name' => 'required|max:20',
+            'warranty' => 'required|numeric|max:150000',
+            'cost' => 'required|numeric|max:50000'
+        ]);
+
+        Service::create($request->all());
+
+        return redirect()->route('services.index');
     }
 
     /**
@@ -58,7 +69,9 @@ class ServicesController extends Controller
      */
     public function show($id)
     {
-        //
+        $service = Service::findOrFail($id);
+
+        return view('services.show')->withService($service);
     }
 
     /**
@@ -85,7 +98,21 @@ class ServicesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        auth()->user()->authorizedRoles('admin');
+
+        $request->validate([
+            'name' => 'required|max:20',
+            'warranty' => 'required|numeric|max:150000',
+            'cost' => 'required|numeric|max:50000'
+        ]);
+
+        Service::findOrFail($id)->update($request->all([
+            'name', 'time_required', 'warranty', 'cost'
+        ]));
+
+        session()->flash('message', 'Service successfully updated');
+
+        return redirect()->route('services.index');
     }
 
     /**

@@ -23,6 +23,4 @@
     </div><!-- /.container -->
 
 
-    @yield('script')
-
 @include('layout.footer')

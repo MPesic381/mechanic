@@ -26,7 +26,7 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->unsignedInteger('cost');
             $table->time('time_required');
-            $table->integer('cyclic')->default('0');
+            $table->integer('warranty')->default('0');
 
             $table->unique(["name"], 'name_UNIQUE');
             $table->nullableTimestamps();

@@ -26,8 +26,8 @@
                         <a class="nav-link dropdown-toggle text-white" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown01">
                             <a class="dropdown-item" href="/cars">Your cars</a>
-                            <a class="dropdown-item" href="#">Services</a>
-                            <a class="dropdown-item" href="logout">Logout</a>
+                            <a class="dropdown-item" href="/services">Services</a>
+                            <a class="dropdown-item" href="/logout">Logout</a>
                         </div>
                     </li>
                 </ul>

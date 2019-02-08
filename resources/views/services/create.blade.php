@@ -1,38 +1,37 @@
 @extends('layout.master')
 
 @section('title')
-    Edit Service
+    Add new service
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-md-9">
-            <form action="/services/{{ $service->id }}" method="post">
+            <form action="/services" method="post">
                 @csrf
-                @method('patch')
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="name">Name:</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $service->name) }}">
+                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="time_required">Time Required:</label>
-                            <input type="text" class="form-control" id="time" placeholder="Time" name="time_required" value="{{  old('time_required', $service->time_required)  }}">
+                            <input type="text" class="form-control" id="time" placeholder="Time" name="time_required" value="{{  old('time_required')  }}">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="warranty">Warranty:</label>
-                            <input type="text" class="form-control" id="warranty" name="warranty" value="{{ old('warranty', $service->warranty) }}">
+                            <input type="text" class="form-control" id="warranty" name="warranty" value="{{ old('warranty') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="cost">Cost:</label>
-                            <input type="text" class="form-control" id="cost" name="cost" value="{{ old('price', $service->cost) }}">
+                            <input type="text" class="form-control" id="cost" name="cost" value="{{ old('cost') }}">
                         </div>
                     </div>
 
@@ -40,8 +39,7 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <button class="btn btn-primary" type="submit">Edit</button>
-                            <a href="/services" class="btn btn-outline-primary">Back</a>
+                            <button class="btn btn-primary" type="submit">Insert</button>
                         </div>
                     </div>
                 </div>
@@ -57,7 +55,7 @@
     <script>
         var timepicker = new TimePicker('time', {
             lang: 'en',
-            theme: 'dark'
+            theme: 'blue-grey'
         });
         timepicker.on('change', function(evt) {
 

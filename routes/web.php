@@ -11,18 +11,16 @@
 |
 */
 
-use App\Role;
-
 Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/register', 'UsersController@create');
-Route::post('/register', 'UsersController@store');
+Route::get('/register', 'UserController@create');
+Route::post('/register', 'UserController@store');
 
-Route::get('/login', 'SessionsController@create');
-Route::post('/login', 'SessionsController@store');
-Route::get('/logout', 'SessionsController@destroy');
+Route::get('/login', 'SessionController@create');
+Route::post('/login', 'SessionController@store');
+Route::get('/logout', 'SessionController@destroy');
 
-Route::resource('cars', 'CarsController');
-Route::resource('services', 'ServicesController');
+Route::resource('cars', 'CarController');
+Route::resource('services', 'ServiceController');

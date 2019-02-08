@@ -4,7 +4,9 @@
     <p>&copy; 2017-2018 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
 </footer>
 </main>
-{{--<script src="{{ mix('/js/app.js') }}"></script>--}}
+    @yield('script')
+<script src="{{ mix('js/app.js') }}"></script>
+
 
 <script
         src="https://code.jquery.com/jquery-3.3.1.slim.js"

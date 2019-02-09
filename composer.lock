@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5e425d8fe6844ea50fdac558f9f382c",
+    "content-hash": "1f31dc28b7f357502495c2e0274a672a",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -3497,16 +3497,16 @@
         },
         {
             "name": "laravel/homestead",
-            "version": "v8.0.2",
+            "version": "v8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/homestead.git",
-                "reference": "e56b86c5034621894d2b5d92db18207d379269f9"
+                "reference": "7a47985866dd13896a14883038bd1faf40702253"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/homestead/zipball/e56b86c5034621894d2b5d92db18207d379269f9",
-                "reference": "e56b86c5034621894d2b5d92db18207d379269f9",
+                "url": "https://api.github.com/repos/laravel/homestead/zipball/7a47985866dd13896a14883038bd1faf40702253",
+                "reference": "7a47985866dd13896a14883038bd1faf40702253",
                 "shasum": ""
             },
             "require": {
@@ -3543,7 +3543,7 @@
                 }
             ],
             "description": "A virtual machine for web artisans.",
-            "time": "2019-01-29T18:32:11+00:00"
+            "time": "2019-02-06T01:05:54+00:00"
         },
         {
             "name": "mockery/mockery",

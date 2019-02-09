@@ -17,12 +17,19 @@
                             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $service->name) }}">
                         </div>
                     </div>
-                    <div class="col-md-2">
+
+                    <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="time_required">Time Required:</label>
-                            <input type="text" class="form-control" id="time" placeholder="Time" name="time_required" value="{{  old('time_required', $service->time_required)  }}">
+                            <label for="name">Name:</label>
+                            <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" name="time_required" value="{{ old('time_required', $service->time_required) }}"/>
+                                <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="warranty">Warranty:</label>
@@ -55,15 +62,10 @@
 
 @section('script')
     <script>
-        var timepicker = new TimePicker('time', {
-            lang: 'en',
-            theme: 'dark'
-        });
-        timepicker.on('change', function(evt) {
-
-            var value = (evt.hour || '00') + ':' + (evt.minute || '00');
-            evt.element.value = value;
-
+        $(function () {
+            $('#datetimepicker3').datetimepicker({
+                format: 'HH:mm'
+            });
         });
     </script>
 @endsection

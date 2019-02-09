@@ -51,7 +51,8 @@ class ServiceController extends Controller
         auth()->user()->authorizedRoles('admin');
 
         $request->validate([
-            'name' => 'required|max:20',
+            'name' => 'required|max:30',
+            'time_required' => 'required|date_format:H:i',
             'warranty' => 'required|numeric|max:150000',
             'cost' => 'required|numeric|max:50000'
         ]);
@@ -101,7 +102,8 @@ class ServiceController extends Controller
         auth()->user()->authorizedRoles('admin');
 
         $request->validate([
-            'name' => 'required|max:20',
+            'name' => 'required|max:30',
+            'time_required' => 'required|date_format:H:i',
             'warranty' => 'required|numeric|max:150000',
             'cost' => 'required|numeric|max:50000'
         ]);

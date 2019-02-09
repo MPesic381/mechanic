@@ -11,6 +11,6 @@ class ServicesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Service::class, 5)->create();
+        factory('App\Service', 5)->create();
     }
 }

@@ -5,9 +5,9 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// require('bootstrap');
 // require('jquery');
-// require('./timepicker.min.js');
+// require('popper.js');
 
 window.Vue = require('vue');
 

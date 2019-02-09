@@ -5,7 +5,7 @@
 </footer>
 </main>
     @yield('script')
-<script src="{{ mix('js/app.js') }}"></script>
+{{--<script src="{{ mix('js/app.js') }}"></script>--}}
 
 
 <script
@@ -13,8 +13,6 @@
         integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
         crossorigin="anonymous">
 </script>
-<script>window.jQuery || document.write('<script src="https://code.jquery.com/jquery-3.3.1.slim.js"><\/script>')</script>
-<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
 <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -24,3 +24,4 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::resource('cars', 'CarController');
 Route::resource('services', 'ServiceController');
+Route::resource('bookings', 'BookingController');

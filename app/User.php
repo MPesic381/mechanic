@@ -38,6 +38,10 @@ class User extends Authenticatable
         return $this->hasMany(Car::class);
     }
 
+    public function owns($related)
+    {
+        return $this->id == $related->user_id;
+    }
 
     public function authorizedRoles($roles)
     {

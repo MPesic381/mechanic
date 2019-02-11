@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Car;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CarController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth']);
     }
 
     /**
@@ -34,6 +35,8 @@ class CarController extends Controller
      */
     public function create()
     {
+        auth()->user()->authorizedRoles('client');
+
         return view('cars.create');
     }
 
@@ -45,6 +48,9 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
+        auth()->user()->authorizedRoles('client');
+
+
         $attributes = $request->validate([
             'plate' => 'required|min:3|max:10',
             'manufacturer' => 'required|max:30',
@@ -76,6 +82,10 @@ class CarController extends Controller
 
         $car = Car::findOrFail($id);
 
+        if (Gate::denies('action', $car)) {
+            abort(403, 'You don\'t have access to view this');
+        }
+
         return view('cars.show')->withCar($car);
     }
 
@@ -90,6 +100,10 @@ class CarController extends Controller
         auth()->user()->authorizedRoles('client');
 
         $car = Car::findOrFail($id);
+
+        if (Gate::denies('action', $car)) {
+            abort(403, 'You don\'t have access to view this');
+        }
 
         return view('cars.edit')->withCar($car);
     }
@@ -115,7 +129,13 @@ class CarController extends Controller
             'cc' => 'required|integer|between:50,7000'
         ]);
 
-        auth()->user()->cars()->find($id)->update($attributes);
+        $car = auth()->user()->cars()->find($id);
+
+        if (Gate::denies('action', $car)) {
+            abort(403, 'You don\'t have access to view this');
+        }
+
+        $car->update($attributes);
 
         session()->flash('message', 'Car successfully updated');
 
@@ -132,7 +152,13 @@ class CarController extends Controller
     {
         auth()->user()->authorizedRoles('client');
 
-        auth()->user()->cars()->find($id)->delete();
+        $car = auth()->user()->cars()->find($id);
+
+        if (Gate::denies('action', $car)) {
+            abort(403, 'You don\'t have access to view this');
+        }
+
+        $car->delete();
 
         session()->flash('message', 'Car successfully deleted');
 

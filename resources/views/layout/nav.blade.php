@@ -10,28 +10,30 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
             </ul>
-            @if (!auth()->check())
-                <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto">
+                @if (!auth()->check())
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/register">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/login">Login</a>
                     </li>
-                </ul>
-            @endif
-            @if (auth()->check())
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }}</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown01">
-                            <a class="dropdown-item" href="/cars">Your cars</a>
-                            <a class="dropdown-item" href="/services">Services</a>
-                            <a class="dropdown-item" href="/logout">Logout</a>
-                        </div>
+                @endif
+                @if (auth()->check())
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/cars">Cars</a>
                     </li>
-                </ul>
-            @endif
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/bookings">Bookings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/logout">Logout</a>
+                    </li>
+                @endif
+            </ul>
         </div>
     </nav>
 </header>

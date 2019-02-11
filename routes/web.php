@@ -18,9 +18,9 @@ Route::get('/', function () {
 Route::get('/register', 'UserController@create');
 Route::post('/register', 'UserController@store');
 
-Route::get('/login', 'SessionController@create');
-Route::post('/login', 'SessionController@store');
-Route::get('/logout', 'SessionController@destroy');
+Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/login', 'Auth\LoginController@login');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::resource('cars', 'CarController');
 Route::resource('services', 'ServiceController');

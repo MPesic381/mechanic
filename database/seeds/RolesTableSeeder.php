@@ -25,6 +25,11 @@ class RolesTableSeeder extends Seeder
                 'name' => 'client',
                 'created_at' => $now,
                 'updated_at' => $now
+            ],
+            [
+                'name' => 'blocked',
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 

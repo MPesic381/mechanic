@@ -32,7 +32,7 @@ class CreateBookingsTable extends Migration
 
             $table->index(["car_id"], 'fk_bookings_cars1_idx');
 
-            $table->unique(["car_id", "service_id"], 'uq_bookings_cars_services');
+            $table->unique(["service_id"], 'uq_bookings_cars_services');
             $table->nullableTimestamps();
 
 

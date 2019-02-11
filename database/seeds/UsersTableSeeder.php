@@ -29,5 +29,7 @@ class UsersTableSeeder extends Seeder
         $client->password = bcrypt('leskovac123');
         $client->role()->associate($role_client);
         $client->save();
+
+        factory(App\User::class, 10)->create();
     }
 }

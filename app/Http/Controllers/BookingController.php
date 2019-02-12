@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Booking;
+use App\Car;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,8 @@ class BookingController extends Controller
 
 //        return $bookings;
 
-        $bookings = auth()->user()->cars()->with(['bookings', 'services'])->get();
+//        $bookings = auth()->user()->cars()->with('')->get();
+        $bookings = Car::find(4)->bookings()->with('service')->get();
 
         return $bookings;
 

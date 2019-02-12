@@ -28,7 +28,7 @@ class BookingController extends Controller
 
 //        return $bookings;
 
-//        $bookings = auth()->user()->cars()->with('')->get();
+//        $bookings = auth()->user()->cars()->with('booking')->get();
         $bookings = Car::find(4)->bookings()->with('service')->get();
 
         return $bookings;

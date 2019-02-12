@@ -10,4 +10,9 @@ class Booking extends Model
     {
         return $this->belongsTo(Car::class);
     }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
 }

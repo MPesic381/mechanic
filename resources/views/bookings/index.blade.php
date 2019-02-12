@@ -19,13 +19,20 @@
                 </tr>
                 </thead>
 
-                @foreach($bookings as $booking)
+                <tr>
+
+                </tr>
+
+                @foreach($cars as $car)
+                    <h3>{{ $car->plate }}</h3>
+                    @foreach($car->bookings as $booking )
                     <tr>
                         <td>{{ $booking->id }}</td>
-                        <td>{{ $booking->id }}</td>
-                        <td>{{ $booking->id }}</td>
+                        <td>{{ $booking->start_time }}</td>
+                        <td>{{ $booking->end_time }}</td>
                         <td>{{ $booking->id }}</td>
                     </tr>
+                        @endforeach
                 @endforeach
             </table>
         </div>

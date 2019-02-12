@@ -9,4 +9,9 @@ class Service extends Model
     protected $fillable = [
         'name', 'time_required', 'warranty', 'cost',
     ];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

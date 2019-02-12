@@ -28,14 +28,15 @@ class BookingController extends Controller
 
 //        return $bookings;
 
-//        $bookings = auth()->user()->cars()->with('booking')->get();
-        $bookings = Car::find(4)->bookings()->with('service')->get();
+        $bookings = auth()->user()->cars()->with('bookings.service')->get();
+//        $bookings = Car::find(4)->bookings()->with('service')->get();
 
         return $bookings;
 
         return view('bookings.index')->withCars($bookings);
     }
 
+    //cars.table, booking.time, service.name
     /**
      * Show the form for creating a new resource.
      *

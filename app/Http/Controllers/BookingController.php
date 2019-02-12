@@ -18,25 +18,30 @@ class BookingController extends Controller
     {
         $now = Carbon::now();
 
-//        $bookings = Booking::join('cars', 'bookings.car_id', 'cars.id')
-//            ->join('users', 'cars.user_id', 'users.id')
-//            ->join('services', 'bookings.service_id', 'services.id')
-//            ->where('bookings.start_time', '>', $now)
-//            ->where('users.id', auth()->user()->id)
-//            ->orderBy('bookings.start_time', 'ASC')
-//            ->get(['cars.plate', 'bookings.end_time', 'services.name']);
+        $cars = auth()->user()->cars()->with('bookings')->get();
 
-//        return $bookings;
+        $bookings = [];
 
-        $bookings = auth()->user()->cars()->with('bookings.service')->get();
-//        $bookings = Car::find(4)->bookings()->with('service')->get();
+        foreach ($cars as $car) {
+            foreach($car->bookings as $booking) {
+                $bookings[] = [
+                    'bookingId' => $booking->id,
+                    'plate' => $car->plate,
+                    'start_time' => $booking->start_time,
+                    'end_time' => $booking->end_time,
+                ];
+            }
+        }
+
+        array_multisort(array_map(function($element) {
+            return $element['start_time'];
+        }, $bookings), SORT_ASC, $bookings);
 
         return $bookings;
 
-        return view('bookings.index')->withCars($bookings);
+        return view('bookings.index')->withBookings($bookings);
     }
 
-    //cars.table, booking.time, service.name
     /**
      * Show the form for creating a new resource.
      *

@@ -12,27 +12,21 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col" width="2%">#</th>
+                    <th scope="col" width="2%">Plates</th>
                     <th scope="col" width="30%">No. plate</th>
                     <th scope="col">Car</th>
                     <th scope="col" width="30%">Action</th>
                 </tr>
                 </thead>
-
-                <tr>
-
-                </tr>
-
-                @foreach($cars as $car)
-                    <h3>{{ $car->plate }}</h3>
-                    @foreach($car->bookings as $booking )
+                @foreach($bookings as $booking)
                     <tr>
-                        <td>{{ $booking->id }}</td>
-                        <td>{{ $booking->start_time }}</td>
-                        <td>{{ $booking->end_time }}</td>
-                        <td>{{ $booking->id }}</td>
+                        <td class="font-weight-bold">{{ $booking['plate'] }}</td>
+                        <td>{{ $booking['start_time'] }}</td>
+                        <td>{{ $booking['end_time'] }}</td>
+                        <td>
+
+                        </td>
                     </tr>
-                        @endforeach
                 @endforeach
             </table>
         </div>

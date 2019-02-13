@@ -15,6 +15,6 @@ $factory->define(App\Car::class, function (Faker $faker) {
         'kilometrage' => $faker->biasedNumberBetween(0, 300000),
         'hp' => $faker->biasedNumberBetween(40, 800),
         'cc' => $faker->biasedNumberBetween(700, 5000),
-        'user_id' => 2
+        'user_id' => App\User::all()->random()->id
     ];
 });

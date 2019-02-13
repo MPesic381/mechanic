@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-12 order-md-1">
             <h4 class="mb-3"></h4>
-            <form action="/cars" method="post" >
+            <form action="/bookings" method="post" >
                 <div class="row">
                     @csrf
                     <div class="col-md-2">
@@ -43,10 +43,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <form action="/" method="post">
-                                @csrf
-                                <button class="btn btn-outline-primary">Check date</button>
-                            </form>
+                            <button type="submit" class="btn btn-outline-primary">Check time</button>
                         </div>
                     </div>
                     <div class="col-md-3">

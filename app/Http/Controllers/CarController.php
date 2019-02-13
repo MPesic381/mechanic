@@ -24,6 +24,8 @@ class CarController extends Controller
     {
         auth()->user()->authorizedRoles(['admin', 'client']);
 
+        $cars = null;
+
         if (auth()->user()->is('admin')) {
             $cars = Car::all();
         }

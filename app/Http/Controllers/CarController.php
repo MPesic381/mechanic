@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Car;
-use Illuminate\Http\Request;
+use App\Http\Requests\CarStoreRequest;
+use App\Http\Requests\CarUpdateRequest;
 use Illuminate\Support\Facades\Gate;
 
 class CarController extends Controller
@@ -21,9 +22,15 @@ class CarController extends Controller
      */
     public function index()
     {
-        auth()->user()->authorizedRoles('client');
+        auth()->user()->authorizedRoles(['admin', 'client']);
 
-        $cars = auth()->user()->cars()->get();
+        if (auth()->user()->is('admin')) {
+            $cars = Car::all();
+        }
+
+        if (auth()->user()->is('client')) {
+            $cars = auth()->user()->cars()->get();
+        }
 
         return view('cars.index')->withCars($cars);
     }
@@ -35,7 +42,7 @@ class CarController extends Controller
      */
     public function create()
     {
-        auth()->user()->authorizedRoles('client');
+        auth()->user()->authorizedRoles(['admin', 'client']);
 
         return view('cars.create');
     }
@@ -43,26 +50,13 @@ class CarController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CarStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CarStoreRequest $request)
     {
-        auth()->user()->authorizedRoles('client');
-
-
-        $attributes = $request->validate([
-            'plate' => 'required|min:3|max:10',
-            'manufacturer' => 'required|max:30',
-            'model' => 'required|max:30',
-            'year' => 'required|integer|between:1980,2019|',
-            'kilometrage' => 'required|integer|between:1,500000',
-            'hp' => 'required|integer|between:10,999',
-            'cc' => 'required|integer|between:50,7000'
-        ]);
-
         auth()->user()->cars()->save(
-            new Car($attributes)
+            new Car($request->all())
         );
 
         session()->flash('message', 'You successfully inserted new car');
@@ -78,7 +72,7 @@ class CarController extends Controller
      */
     public function show($id)
     {
-        auth()->user()->authorizedRoles('client');
+        auth()->user()->authorizedRoles(['admin', 'client']);
 
         $car = Car::findOrFail($id);
 
@@ -97,7 +91,7 @@ class CarController extends Controller
      */
     public function edit($id)
     {
-        auth()->user()->authorizedRoles('client');
+        auth()->user()->authorizedRoles(['admin', 'client']);
 
         $car = Car::findOrFail($id);
 
@@ -111,23 +105,13 @@ class CarController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param CarUpdateRequest $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CarUpdateRequest $request, $id)
     {
-        auth()->user()->authorizedRoles('client');
-
-        $attributes = $request->validate([
-            'plate' => 'required|min:3|max:10',
-            'manufacturer' => 'required|max:30',
-            'model' => 'required|max:30',
-            'year' => 'required|integer|between:1980,2019|',
-            'kilometrage' => 'required|integer|between:1,500000',
-            'hp' => 'required|integer|between:10,999',
-            'cc' => 'required|integer|between:50,7000'
-        ]);
+        auth()->user()->authorizedRoles(['admin', 'client']);
 
         $car = auth()->user()->cars()->find($id);
 
@@ -135,7 +119,7 @@ class CarController extends Controller
             abort(403, 'You don\'t have access to view this');
         }
 
-        $car->update($attributes);
+        $car->update($request->all());
 
         session()->flash('message', 'Car successfully updated');
 
@@ -150,7 +134,7 @@ class CarController extends Controller
      */
     public function destroy($id)
     {
-        auth()->user()->authorizedRoles('client');
+        auth()->user()->authorizedRoles(['admin', 'client']);
 
         $car = auth()->user()->cars()->find($id);
 

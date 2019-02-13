@@ -12,7 +12,6 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col" width="2%">#</th>
                     <th scope="col" width="30%">No. plate</th>
                     <th scope="col">Car</th>
                     <th scope="col" width="30%">Action</th>
@@ -21,7 +20,6 @@
 
                 @foreach($cars as $car)
                     <tr>
-                        <th scope="row">{{ $car->id }}</th>
                         <td>{{ $car->plate }}</td>
                         <td>{{ $car->manufacturer }} {{ $car->model }}</td>
                         <td>

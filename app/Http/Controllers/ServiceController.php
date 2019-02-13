@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServiceUpdateRequest;
 use App\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -43,19 +44,12 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ServiceStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ServiceStoreRequest $request)
     {
         auth()->user()->authorizedRoles('admin');
-
-        $request->validate([
-            'name' => 'required|max:30',
-            'time_required' => 'required|date_format:H:i',
-            'warranty' => 'required|numeric|max:150000',
-            'cost' => 'required|numeric|max:50000'
-        ]);
 
         Service::create($request->all());
 
@@ -93,24 +87,15 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param ServiceUpdateRequest $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ServiceUpdateRequest $request, $id)
     {
         auth()->user()->authorizedRoles('admin');
 
-        $request->validate([
-            'name' => 'required|max:30',
-            'time_required' => 'required|date_format:H:i',
-            'warranty' => 'required|numeric|max:150000',
-            'cost' => 'required|numeric|max:50000'
-        ]);
-
-        Service::findOrFail($id)->update($request->all([
-            'name', 'time_required', 'warranty', 'cost'
-        ]));
+        Service::findOrFail($id)->update($request->all());
 
         session()->flash('message', 'Service successfully updated');
 

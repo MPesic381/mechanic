@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Booking;
 use App\Car;
+use App\Service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,28 +22,26 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $now = Carbon::now();
-
         $cars = auth()->user()->cars()->with('bookings')->get();
 
         $bookings = [];
 
         foreach ($cars as $car) {
             foreach($car->bookings as $booking) {
-                $bookings[] = [
-                    'bookingId' => $booking->id,
-                    'plate' => $car->plate,
-                    'start_time' => $booking->start_time,
-                    'end_time' => $booking->end_time,
-                ];
+                if ($booking->start_time > Carbon::now()) {
+                    $bookings[] = [
+                        'bookingId' => $booking->id,
+                        'plate' => $car->plate,
+                        'start_time' => $booking->start_time,
+                        'end_time' => $booking->end_time,
+                    ];
+                }
             }
         }
 
         array_multisort(array_map(function($element) {
             return $element['start_time'];
         }, $bookings), SORT_ASC, $bookings);
-
-        return $bookings;
 
         return view('bookings.index')->withBookings($bookings);
     }
@@ -49,7 +53,13 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $cars = auth()->user()->cars()->get();
+
+        $services = Service::all();
+
+        return view('bookings.create')
+            ->withCars($cars)
+            ->withServices($services);
     }
 
     /**

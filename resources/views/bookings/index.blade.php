@@ -24,7 +24,19 @@
                         <td>{{ $booking['start_time'] }}</td>
                         <td>{{ $booking['end_time'] }}</td>
                         <td>
-
+                            <div class="btn-group">
+                                <a href="/bookings/{{ $booking['bookingId'] }}" class="btn btn-info">Details</a>
+                            </div>
+                            <div class="btn-group">
+                                <a href="/bookings/{{ $booking['bookingId'] }}/edit" class="btn btn-primary">Edit</a>
+                            </div>
+                            <div class="btn-group">
+                                <form action="/bookings/{{ $booking['bookingId'] }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -35,7 +47,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Car options</h4>
                     <p class="card-text">Some example text. Some example text.</p>
-                    <a href="/cars/create" class="btn btn-primary">Insert</a>
+                    <a href="/bookings/create" class="btn btn-primary">Insert</a>
                 </div>
             </div>
         </div>

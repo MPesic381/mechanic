@@ -43,7 +43,10 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <button class="btn btn-outline-primary">Check date</button>
+                            <form action="/" method="post">
+                                @csrf
+                                <button class="btn btn-outline-primary">Check date</button>
+                            </form>
                         </div>
                     </div>
                     <div class="col-md-3">

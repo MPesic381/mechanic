@@ -43,6 +43,10 @@ class User extends Authenticatable
         return $this->id == $related->user_id;
     }
 
+    public function is($role) {
+        return $this->role->name == $role;
+    }
+
     public function authorizedRoles($roles)
     {
         if (is_array($roles)) {

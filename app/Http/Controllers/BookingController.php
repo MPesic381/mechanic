@@ -22,7 +22,15 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $cars = auth()->user()->cars()->with('bookings')->get();
+        $cars = null;
+
+        if (auth()->user()->is('admin')) {
+            $cars = Car::with('bookings')->get();
+        }
+
+        if (auth()->user()->is('client')) {
+            $cars = auth()->user()->cars()->with('bookings')->get();
+        }
 
         $bookings = [];
 
@@ -115,6 +123,6 @@ class BookingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        auth()->user()->autorizedRoles(['admin', 'client']);
     }
 }

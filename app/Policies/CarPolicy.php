@@ -19,7 +19,7 @@ class CarPolicy
      */
     public function view(User $user, Car $car)
     {
-        return $user->owns($car);
+        return $user->owns($car) || $user->hasRole('admin');
     }
 
     /**

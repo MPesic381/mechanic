@@ -23,7 +23,7 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/cars">Cars</a>
                     </li>
-                    @if(auth()->user()->is('admin'))
+                    @if(auth()->user()->hasRole('admin'))
                         <li class="nav-item">
                             <a class="nav-link text-white" href="/services">Services</a>
                         </li>

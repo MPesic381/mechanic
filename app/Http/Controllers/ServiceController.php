@@ -12,7 +12,7 @@ class ServiceController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     /**
@@ -22,8 +22,6 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        auth()->user()->authorizedRoles('admin');
-
         $services = Service::all();
 
         return view('services.index')->withServices($services);
@@ -36,8 +34,6 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        auth()->user()->authorizedRoles('admin');
-
         return view('services.create');
     }
 
@@ -49,8 +45,6 @@ class ServiceController extends Controller
      */
     public function store(ServiceStoreRequest $request)
     {
-        auth()->user()->authorizedRoles('admin');
-
         Service::create($request->all());
 
         return redirect()->route('services.index');
@@ -75,8 +69,6 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        auth()->user()->authorizedRoles('admin');
-
         return view('services.edit')->withService($service);
     }
 
@@ -89,8 +81,6 @@ class ServiceController extends Controller
      */
     public function update(ServiceUpdateRequest $request, Service $service)
     {
-        auth()->user()->authorizedRoles('admin');
-
         $service->update($request->all());
 
         session()->flash('message', 'Service successfully updated');
@@ -106,8 +96,6 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        auth()->user()->authorizedRoles('admin');
-
         Service::destroy($id);
 
         session()->flash('message', 'You have deleted one record');

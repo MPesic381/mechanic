@@ -59,27 +59,23 @@ class ServiceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Service $service
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Service $service)
     {
-        $service = Service::findOrFail($id);
-
-        return view('services.show')->withService($service);
+        return redirect()->route('services.index');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Service $service
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Service $service)
     {
         auth()->user()->authorizedRoles('admin');
-
-        $service = Service::findOrFail($id);
 
         return view('services.edit')->withService($service);
     }
@@ -88,14 +84,14 @@ class ServiceController extends Controller
      * Update the specified resource in storage.
      *
      * @param ServiceUpdateRequest $request
-     * @param  int $id
+     * @param Service $service
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceUpdateRequest $request, $id)
+    public function update(ServiceUpdateRequest $request, Service $service)
     {
         auth()->user()->authorizedRoles('admin');
 
-        Service::findOrFail($id)->update($request->all());
+        $service->update($request->all());
 
         session()->flash('message', 'Service successfully updated');
 

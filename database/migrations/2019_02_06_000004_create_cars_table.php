@@ -31,6 +31,7 @@ class CreateCarsTable extends Migration
             $table->unsignedInteger('hp');
             $table->unsignedInteger('cc');
             $table->unsignedInteger('user_id');
+            $table->softDeletes();
 
             $table->index(["user_id"], 'fk_cars_users1_idx');
 

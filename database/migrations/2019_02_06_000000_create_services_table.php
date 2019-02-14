@@ -27,6 +27,7 @@ class CreateServicesTable extends Migration
             $table->unsignedInteger('cost');
             $table->time('time_required');
             $table->integer('warranty')->default('0');
+            $table->softDeletes();
 
             $table->unique(["name"], 'name_UNIQUE');
             $table->nullableTimestamps();

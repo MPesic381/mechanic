@@ -139,7 +139,7 @@ class CarController extends Controller
 
         $car->delete();
 
-        session()->flash('message', 'Car successfully deleted');
+        session()->flash('message', 'You have deleted one record');
 
         return back();
     }

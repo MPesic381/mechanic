@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Car;
 use App\Http\Requests\CarStoreRequest;
 use App\Http\Requests\CarUpdateRequest;
-use Illuminate\Support\Facades\Gate;
 
 class CarController extends Controller
 {

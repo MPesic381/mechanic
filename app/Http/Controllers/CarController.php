@@ -44,8 +44,6 @@ class CarController extends Controller
      */
     public function create()
     {
-//        auth()->user()->authorizedRoles(['admin', 'client']);
-
         return view('cars.create');
     }
 

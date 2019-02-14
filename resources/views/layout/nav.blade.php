@@ -23,9 +23,11 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/cars">Cars</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="/services">Services</a>
-                    </li>
+                    @if(auth()->user()->is('admin'))
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/services">Services</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/bookings">Bookings</a>
                     </li>

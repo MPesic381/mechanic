@@ -69,14 +69,12 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Car $car)
     {
         auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = Car::findOrFail($id);
 
         if (Gate::denies('action', $car)) {
             abort(403, 'You don\'t have access to view this');
@@ -88,14 +86,12 @@ class CarController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Car $car)
     {
         auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = Car::findOrFail($id);
 
         if (Gate::denies('action', $car)) {
             abort(403, 'You don\'t have access to view this');
@@ -111,11 +107,9 @@ class CarController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CarUpdateRequest $request, $id)
+    public function update(CarUpdateRequest $request, Car $car)
     {
         auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = auth()->user()->cars()->find($id);
 
         if (Gate::denies('action', $car)) {
             abort(403, 'You don\'t have access to view this');
@@ -131,14 +125,13 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Car $car)
     {
         auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = auth()->user()->cars()->find($id);
 
         if (Gate::denies('action', $car)) {
             abort(403, 'You don\'t have access to view this');

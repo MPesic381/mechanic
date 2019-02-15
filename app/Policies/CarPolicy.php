@@ -42,7 +42,7 @@ class CarPolicy
      */
     public function update(User $user, Car $car)
     {
-        return $user->owns($car) || $user->is('admin');
+        return $user->owns($car) || $user->hasRole('admin');
     }
 
     /**
@@ -54,7 +54,7 @@ class CarPolicy
      */
     public function delete(User $user, Car $car)
     {
-        return $user->owns($car) || $user->is('admin');
+        return $user->owns($car) || $user->hasRole('admin');
     }
 
     /**
@@ -66,7 +66,7 @@ class CarPolicy
      */
     public function restore(User $user, Car $car)
     {
-        return $user->is('admin');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -78,6 +78,6 @@ class CarPolicy
      */
     public function forceDelete(User $user, Car $car)
     {
-        return $user->is('admin');
+        return $user->hasRole('admin');
     }
 }

@@ -47,10 +47,10 @@ class User extends Authenticatable
     /**
      * Check if user is creator of specific relation
      *
-     * @param Model $related
+     * @param string $related
      * @return bool
      */
-    public function owns(Model $related)
+    public function owns($related)
     {
         return $this->id == $related->user_id;
     }

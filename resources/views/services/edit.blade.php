@@ -53,7 +53,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    @include('layout.errors')
+                    <div class="col-md-12">
+                        @include('layout.errors')
+                    </div>
                 </div>
             </form>
         </div>

@@ -26,13 +26,10 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = null;
 
-        if (auth()->user()->is('admin')) {
-            $cars = Car::all();
-        }
+        $cars = Car::all();
 
-        if (auth()->user()->is('client')) {
+        if (auth()->user()->hasRole('client')) {
             $cars = auth()->user()->cars()->get();
         }
 

@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 class ServiceController extends Controller
 {
 
+    /**
+     * ServiceController constructor.
+     */
     public function __construct()
     {
         $this->middleware('role:admin');

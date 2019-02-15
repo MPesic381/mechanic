@@ -28,21 +28,38 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cars()
     {
         return $this->hasMany(Car::class);
     }
 
-    public function owns($related)
+    /**
+     * Check if user is creator of specific relation
+     *
+     * @param Model $related
+     * @return bool
+     */
+    public function owns(Model $related)
     {
         return $this->id == $related->user_id;
     }
 
+    /**
+     * Check if user have appropriate role
+     * @param $role
+     * @return bool
+     */
     public function hasRole($role) {
         return $this->role->name == $role;
     }

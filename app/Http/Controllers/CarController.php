@@ -9,6 +9,9 @@ use App\Http\Requests\CarUpdateRequest;
 class CarController extends Controller
 {
 
+    /**
+     * CarController constructor.
+     */
     public function __construct()
     {
         $this->middleware(['auth']);

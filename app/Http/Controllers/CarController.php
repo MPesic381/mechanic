@@ -14,7 +14,7 @@ class CarController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'role:admin,client']);
 
         $this->authorizeResource(Car::class, 'car');
     }
@@ -26,7 +26,6 @@ class CarController extends Controller
      */
     public function index()
     {
-
         $cars = Car::all();
 
         if (auth()->user()->hasRole('client')) {

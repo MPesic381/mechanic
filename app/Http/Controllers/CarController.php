@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Car;
 use App\Http\Requests\CarStoreRequest;
 use App\Http\Requests\CarUpdateRequest;
-use Illuminate\Support\Facades\Gate;
 
 class CarController extends Controller
 {
 
+    /**
+     * CarController constructor.
+     */
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['auth', 'role:admin,client']);
+
+        $this->authorizeResource(Car::class, 'car');
     }
 
     /**
@@ -22,15 +26,9 @@ class CarController extends Controller
      */
     public function index()
     {
-        auth()->user()->authorizedRoles(['admin', 'client']);
+        $cars = Car::all();
 
-        $cars = null;
-
-        if (auth()->user()->is('admin')) {
-            $cars = Car::all();
-        }
-
-        if (auth()->user()->is('client')) {
+        if (auth()->user()->hasRole('client')) {
             $cars = auth()->user()->cars()->get();
         }
 
@@ -44,8 +42,6 @@ class CarController extends Controller
      */
     public function create()
     {
-        auth()->user()->authorizedRoles(['admin', 'client']);
-
         return view('cars.create');
     }
 
@@ -69,38 +65,22 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Car $car)
     {
-        auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = Car::findOrFail($id);
-
-        if (Gate::denies('action', $car)) {
-            abort(403, 'You don\'t have access to view this');
-        }
-
         return view('cars.show')->withCar($car);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Car $car)
     {
-        auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = Car::findOrFail($id);
-
-        if (Gate::denies('action', $car)) {
-            abort(403, 'You don\'t have access to view this');
-        }
-
         return view('cars.edit')->withCar($car);
     }
 
@@ -108,19 +88,11 @@ class CarController extends Controller
      * Update the specified resource in storage.
      *
      * @param CarUpdateRequest $request
-     * @param  int $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
      */
-    public function update(CarUpdateRequest $request, $id)
+    public function update(CarUpdateRequest $request, Car $car)
     {
-        auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = auth()->user()->cars()->find($id);
-
-        if (Gate::denies('action', $car)) {
-            abort(403, 'You don\'t have access to view this');
-        }
-
         $car->update($request->all());
 
         session()->flash('message', 'Car successfully updated');
@@ -131,22 +103,15 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Car $car
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Car $car)
     {
-        auth()->user()->authorizedRoles(['admin', 'client']);
-
-        $car = auth()->user()->cars()->find($id);
-
-        if (Gate::denies('action', $car)) {
-            abort(403, 'You don\'t have access to view this');
-        }
-
         $car->delete();
 
-        session()->flash('message', 'Car successfully deleted');
+        session()->flash('message', 'You have deleted one record');
 
         return back();
     }

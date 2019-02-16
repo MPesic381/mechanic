@@ -28,44 +28,39 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function cars()
     {
         return $this->hasMany(Car::class);
     }
 
+    /**
+     * Check if user is creator of specific relation
+     *
+     * @param string $related
+     * @return bool
+     */
     public function owns($related)
     {
         return $this->id == $related->user_id;
     }
 
-    public function is($role) {
+    /**
+     * Check if user have appropriate role
+     * @param $role
+     * @return bool
+     */
+    public function hasRole($role) {
         return $this->role->name == $role;
-    }
-
-    public function authorizedRoles($roles)
-    {
-        if (is_array($roles)) {
-            return $this->hasAnyRole($roles) ||
-                abort(401, 'This action is unauthorized.');
-        }
-
-        return $this->hasRole($roles) ||
-            abort(401, 'This action is unauthorized.');
-    }
-
-    private function hasAnyRole($roles)
-    {
-        return null !== $this->role()->whereIn('name', $roles)->first();
-    }
-
-
-    private function hasRole($role)
-    {
-        return null !== $this->role()->where('name', $role)->first();
     }
 }

@@ -17,7 +17,7 @@ class Booking extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public static function isAvailable($start, $duration)
+    protected static function isAvailable($start, $duration)
     {
         $end = (new Carbon($start))->addMinutes($duration);
 

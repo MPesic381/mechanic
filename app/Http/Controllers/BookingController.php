@@ -24,11 +24,11 @@ class BookingController extends Controller
     {
         $cars = null;
 
-        if (auth()->user()->is('admin')) {
+        if (auth()->user()->hasRole('admin')) {
             $cars = Car::with('bookings')->get();
         }
 
-        if (auth()->user()->is('client')) {
+        if (auth()->user()->hasRole('client')) {
             $cars = auth()->user()->cars()->with('bookings')->get();
         }
 

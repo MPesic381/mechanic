@@ -20,7 +20,7 @@
 
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="name">Name:</label>
+                            <label for="name">Time required:</label>
                             <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
                                 <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" name="time_required" value="{{ old('time_required', $service->time_required) }}"/>
                                 <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">

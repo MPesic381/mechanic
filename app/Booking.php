@@ -17,14 +17,14 @@ class Booking extends Model
         return $this->belongsTo(Service::class);
     }
 
-    private static function isAvailable($start, $duration)
+    public static function isAvailable($start, $duration)
     {
-        $end_time = (new Carbon($start))->addMinutes($duration);
+        $end = (new Carbon($start))->addMinutes($duration);
 
-        $booking = self::where([
-            ['start_time', '>', $start],
-            ['start_time', '<', $end_time->toDateTimeString()]
-        ])->get();
+        $booking = self::where([['start_time', '>=', $start], ['start_time', '<', $end->toDateTimeString()]])
+            ->orwhere([['end_time', '>', $start], ['end_time', '<=', $end->toDateTimeString()]])
+            ->orWhere([['start_time', '<', $start], ['end_time', '>', $start]])
+            ->get();
 
         return !count($booking);
     }
@@ -35,23 +35,25 @@ class Booking extends Model
             return $start;
         }
 
-        $bookings = self::where('start_time', '=', $start)->get();
+        $bookings = self::where('start_time', '>=', $start)
+            ->orWhere('end_time', '>=', $start)
+            ->get();
 
         if (count($bookings) === 1) {
             return $bookings[0]->end_time;
         }
 
-        foreach ($bookings as $booking) {
-            $start = new Carbon($booking->start_time);
-            $end = new Carbon($booking->end_time);
+        for ($i = 0, $n = count($bookings); $i < $n - 1; $i++) {
+            $startTime = new Carbon($bookings[$i + 1]->start_time);
+            $endTime = new Carbon($bookings[$i]->end_time);
 
-            $difference = $end->diffInMinutes($start);
+            $difference = $endTime->diffInMinutes($startTime);
 
             if ($difference > $duration) {
-                return $booking->end_time;
+                return $bookings[$i]->end_time;
             }
         }
 
-        return 'fdlskglfk';
+        return $bookings[count($bookings) - 1]->end_time;
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ServiceStoreRequest;
 use App\Http\Requests\ServiceUpdateRequest;
 use App\Service;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {

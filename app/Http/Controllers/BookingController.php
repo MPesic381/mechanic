@@ -12,7 +12,7 @@ class BookingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('role:admin,client');
     }
 
     /**
@@ -24,9 +24,7 @@ class BookingController extends Controller
     {
         $cars = null;
 
-        if (auth()->user()->hasRole('admin')) {
-            $cars = Car::with('bookings')->get();
-        }
+        $cars = Car::with('bookings')->get();
 
         if (auth()->user()->hasRole('client')) {
             $cars = auth()->user()->cars()->with('bookings')->get();
@@ -89,7 +87,7 @@ class BookingController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('bookings.shows');
     }
 
     /**
@@ -123,6 +121,5 @@ class BookingController extends Controller
      */
     public function destroy($id)
     {
-        auth()->user()->autorizedRoles(['admin', 'client']);
     }
 }

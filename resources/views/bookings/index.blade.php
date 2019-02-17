@@ -43,11 +43,15 @@
             </table>
         </div>
         <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Booking option</h4>
-                    <p class="card-text">Some example text. Some example text.</p>
-                    <a href="/bookings/create" class="btn btn-primary">Insert</a>
+            <div class="row">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Booking option</h4>
+                        <p class="card-text">Some example text. Some example text.</p>
+                        <div class="form-group">
+                            <a href="/bookings/create" class="btn btn-primary">Create new booking</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

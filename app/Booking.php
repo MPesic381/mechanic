@@ -29,8 +29,10 @@ class Booking extends Model
         return !count($booking);
     }
 
-    public static function setAvailable($start, $duration)
+    public static function setAvailable($start, $service_id)
     {
+        $duration = Service::find($service_id)->time_required;
+
         if (self::isAvailable($start, $duration)) {
             return $start;
         }

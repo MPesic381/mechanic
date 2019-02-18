@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-9">
             <h4 class="mb-3"></h4>
-            <form action="/bookings" method="post" >
+            <form action="/bookings" id="bookingForm" method="post" >
                 <div class="row">
                     @csrf
                     <div class="col-md-4">
@@ -24,7 +24,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="service">Service</label>
-                            <select name="service_id" id="" class="custom-select d-block w-100">
+                            <select name="service_id" id="service_id" class="custom-select d-block w-100">
                                 @foreach($services as $service)
                                     <option value="{{ $service->id }}">{{ $service->name }}</option>
                                 @endforeach
@@ -43,13 +43,13 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-outline-primary">Check time</button>
+                            <button id="checkTime" class="btn btn-outline-primary">Check time</button>
                         </div>
                     </div>
                     <div class="col-md-">
                         <div class="form-group">
                             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                                <input type="text" id="dateTimeValue" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
                                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>
@@ -76,13 +76,16 @@
                         <div class="form-group">
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".createUser">Create new client</button>
                         </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".createCar">Create new car</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Create User -->
     <div class="modal fade createUser" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -131,12 +134,31 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
+                </div>
 
-                    <hr class="mb-4">
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Create Car -->
+    <div class="modal fade createCar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLongTitle">Create new car</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <h4>Create new car</h4>
                             <form action="/cars" method="post" >
                                 <div class="row">
                                     @csrf
@@ -237,13 +259,34 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @section('script')
     <script>
         $(function () {
-            $('#datetimepicker1').datetimepicker();
+            $('#datetimepicker1').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm'
+            })
+
+            console.log($('#bookingForm'))
+
+            var dateTime = $('#dateTimeValue').val();
+            var service_id = $('#service_id').val();
+
+            $('#checkTime').click(function(e) {
+
+                e.preventDefault();
+
+                $.ajax({
+                    url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/" + dateTime + "/" + service_id,
+                    method: "GET",
+
+                    success:function(response) {
+                        console.log(response)
+                        $('#dateTimeValue').val(response);
+                    }
+                })
+            })
         });
     </script>
 @endsection

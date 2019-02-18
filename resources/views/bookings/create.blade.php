@@ -94,40 +94,43 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="username">Username:</label>
+                    <form action="/api/register" method="post">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="name">Name:</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email:</label>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" name="name" id="name">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="email" id="email">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="password">Password:</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password_confirmation">Repeat Password:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="password" name="password" id="password">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password_confirmation" id="password_confirmation">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <input type="text" name="username" id="username">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="email" id="email">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="username">Pasword:</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Repeat Password:</label>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <input type="text" name="password" id="password">
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="password_confirmation" id="password_confirmation">
-                            </div>
-                        </div>
-                    </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
 
                     <hr class="mb-4">
 

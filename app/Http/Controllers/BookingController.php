@@ -22,8 +22,6 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $cars = null;
-
         $cars = Car::with('bookings')->get();
 
         if (auth()->user()->hasRole('client')) {
@@ -76,7 +74,19 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
+        $service = Service::find($request->service_id);
+
+        Booking::create([
+            'car_id' => $request->car_id,
+            'service_id' => $request->service_id,
+            'start_time' => $start_time,
+            'end_time' => $start_time->addHours($service->time_required),
+        ]);
+
+        session()->flash('message', 'You have just book your service');
+
+        return back();
     }
 
     /**

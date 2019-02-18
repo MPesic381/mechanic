@@ -31,7 +31,9 @@ class Booking extends Model
 
     public static function setAvailable($start, $service_id)
     {
-        $duration = Service::find($service_id)->time_required;
+        $time = explode(':', Service::findOrFail($service_id)->time_required);
+
+        $duration = $time[0] * 60 + $time[1];
 
         if (self::isAvailable($start, $duration)) {
             return $start;
@@ -39,6 +41,7 @@ class Booking extends Model
 
         $bookings = self::where('start_time', '>=', $start)
             ->orWhere('end_time', '>=', $start)
+            ->orderBy('start_time', 'ASC')
             ->get();
 
         if (count($bookings) === 1) {

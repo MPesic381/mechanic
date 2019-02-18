@@ -12,12 +12,12 @@ class BookingController extends Controller
      * Display a listing of the resource.
      *
      * @param $start
-     * @param $duration
+     * @param $service_id
      * @return \Illuminate\Http\Response
      */
-    public function checkAvailable($start, $duration)
+    public function checkAvailable($start, $service_id)
     {
-        $book =  Booking::setAvailable($start, $duration);
+        $book =  Booking::setAvailable($start, $service_id);
 
         return response()->json($book, 200);
     }

@@ -51,6 +51,10 @@ body {
     margin-left: .75rem;
 }
 
+.containerDivider {
+    padding-top: 30px;
+}
+
 
 /* Featurettes
 ------------------------- */

@@ -2,7 +2,7 @@
 
 <main role="main">
 
-    @include('layout.slider')
+    @yield('slider')
 
 
     <!-- Marketing messaging and featurettes
@@ -13,6 +13,8 @@
 
         <!-- START THE FEATURETTES -->
             <h1>@yield('title')</h1>
+
+        <hr class="featurette-divider">
 
             @yield('content')
 

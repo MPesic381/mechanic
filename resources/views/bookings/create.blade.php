@@ -49,7 +49,7 @@
                     <div class="col-md-">
                         <div class="form-group">
                             <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input type="text" id="dateTimeValue" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                                <input type="text" id="dateTimeValue" class="form-control datetimepicker-input" name="start_time" data-target="#datetimepicker1"/>
                                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                 </div>

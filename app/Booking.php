@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
+    protected $fillable = [
+        'car_id', 'service_id', 'start_time', 'end_time'
+    ];
+
     public function car()
     {
         return $this->belongsTo(Car::class);
@@ -58,6 +62,8 @@ class Booking extends Model
                 return $bookings[$i]->end_time;
             }
         }
+
+        return $time;
 
         return $bookings[count($bookings) - 1]->end_time;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Booking;
 use App\Car;
+use App\Http\Requests\BookingStoreRequest;
 use App\Service;
 use App\User;
 use Carbon\Carbon;
@@ -54,10 +55,11 @@ class BookingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookingStoreRequest $request)
     {
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
-        $service = Service::find($request->service_id);
+
+        $service = Service::findOrFail($request->service_id);
 
         Booking::create([
             'car_id' => $request->car_id,
@@ -68,7 +70,7 @@ class BookingController extends Controller
 
         session()->flash('message', 'You have just book your service');
 
-        return back();
+        return redirect('/bookings');
     }
 
     /**

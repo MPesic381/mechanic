@@ -268,15 +268,12 @@
                 format: 'YYYY-MM-DD HH:mm'
             });
 
-            var dateTime = $('#dateTimeValue').val();
-            var service_id = $('#service_id').val();
-
             $('#checkTime').click(function(e) {
 
                 e.preventDefault();
 
                 $.ajax({
-                    url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/" + dateTime + "/" + service_id,
+                    url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/" + $('#dateTimeValue').val() + "/" + $('#service_id').val(),
                     method: "GET",
 
                     success:function(response) {

@@ -51,12 +51,16 @@ body {
     margin-left: .75rem;
 }
 
+.containerDivider {
+    padding-top: 30px;
+}
+
 
 /* Featurettes
 ------------------------- */
 
 .featurette-divider {
-    margin: 2rem 0; /* Space out the Bootstrap <hr> more */
+    margin: 5rem 0; /* Space out the Bootstrap <hr> more */
 }
 
 /* Thin out the marketing headings */

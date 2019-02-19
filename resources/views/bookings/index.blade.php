@@ -20,7 +20,7 @@
                 </thead>
                 @foreach($bookings as $booking)
                     <tr>
-                        <td class="font-weight-bold">{{ $booking['plate'] }}</td>
+                        <td class="font-weight-bold">{{ $booking['car']->plate }}</td>
                         <td>{{ $booking['start_time'] }}</td>
                         <td>{{ $booking['end_time'] }}</td>
                         <td>

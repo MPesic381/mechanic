@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Booking;
 use App\Car;
 use App\Service;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,30 +23,11 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $cars = Car::with('bookings')->get();
+        $bookings = Booking::with('car')->get();
 
-        if (auth()->user()->hasRole('client')) {
-            $cars = auth()->user()->cars()->with('bookings')->get();
+        if(auth()->user()->hasRole('client')) {
+            $bookings = auth()->user()->bookings()->with('car') ->get();
         }
-
-        $bookings = [];
-
-        foreach ($cars as $car) {
-            foreach($car->bookings as $booking) {
-                if ($booking->start_time > Carbon::now()) {
-                    $bookings[] = [
-                        'bookingId' => $booking->id,
-                        'plate' => $car->plate,
-                        'start_time' => $booking->start_time,
-                        'end_time' => $booking->end_time,
-                    ];
-                }
-            }
-        }
-
-        array_multisort(array_map(function($element) {
-            return $element['start_time'];
-        }, $bookings), SORT_ASC, $bookings);
 
         return view('bookings.index')->withBookings($bookings);
     }

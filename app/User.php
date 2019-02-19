@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(Car::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasManyThrough(Booking::class, Car::class);
+    }
+
     /**
      * Check if user is creator of specific relation
      *

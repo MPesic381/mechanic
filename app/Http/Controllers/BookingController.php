@@ -57,15 +57,25 @@ class BookingController extends Controller
      */
     public function store(BookingStoreRequest $request)
     {
+        // Y-m-d H:i
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
 
+        // H:i
         $service = Service::findOrFail($request->service_id);
+
+//        $time = \DateTime::createFromFormat('H:i', $service->time_required);
+//        $serviceDay = Carbon::createFromTimeString($start_time->toDateString() . '00:00');
+//        $serviceTime = Carbon::createFromTimeString($start_time->toDateString() . ' ' . $service->time_required);
+
+        $endTime = null;
+
+        $vreme = new Carbon($service->time_required);
 
         Booking::create([
             'car_id' => $request->car_id,
             'service_id' => $request->service_id,
             'start_time' => $start_time,
-            'end_time' => $start_time->addHours($service->time_required),
+            'end_time' => $start_time->addMinutes($service->time_required),
         ]);
 
         session()->flash('message', 'You have just book your service');

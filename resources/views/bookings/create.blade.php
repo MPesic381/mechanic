@@ -63,6 +63,7 @@
                     </div>
                 </div>
             </form>
+            @include('layout.errors')
         </div>
         <div class="col-md-3">
             <div class="row">

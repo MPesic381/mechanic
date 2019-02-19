@@ -12,9 +12,9 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col" width="2%">Plates</th>
-                    <th scope="col" width="30%">No. plate</th>
-                    <th scope="col">Car</th>
+                    <th scope="col" width="2%">Plate</th>
+                    <th scope="col" width="30%">Service start time</th>
+                    <th scope="col">Service end time</th>
                     <th scope="col" width="30%">Action</th>
                 </tr>
                 </thead>
@@ -25,13 +25,13 @@
                         <td>{{ $booking['end_time'] }}</td>
                         <td>
                             <div class="btn-group">
-                                <a href="/bookings/{{ $booking['bookingId'] }}" class="btn btn-info">Details</a>
+                                <a href="/bookings/{{ $booking->id }}" class="btn btn-info">Details</a>
                             </div>
                             <div class="btn-group">
-                                <a href="/bookings/{{ $booking['bookingId'] }}/edit" class="btn btn-primary">Edit</a>
+                                <a href="/bookings/{{ $booking->id }}/edit" class="btn btn-primary">Edit</a>
                             </div>
                             <div class="btn-group">
-                                <form action="/bookings/{{ $booking['bookingId'] }}" method="post">
+                                <form action="/bookings/{{ $booking->id }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>

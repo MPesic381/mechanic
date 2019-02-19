@@ -24,8 +24,9 @@ class BookingStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'car_id' => 'required',
+            'car_id' => 'required|exists:cars,id',
             'service_id' => 'required',
+            'start_time' => 'required|date_format:Y-m-d H:i'
         ];
     }
 }

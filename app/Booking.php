@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
@@ -64,5 +65,17 @@ class Booking extends Model
         }
 
         return $bookings[count($bookings) - 1]->end_time;
+    }
+
+    public function delete()
+    {
+        if ( $this->start_time < Carbon::now()->addDay()) {
+            session()->flash('message', 'You can\'t delete booking that is in the next 24hrs');
+            return;
+        }
+
+        parent::delete();
+
+        session()->flash('message', 'You have deleted one record');
     }
 }

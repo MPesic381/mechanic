@@ -100,7 +100,6 @@ class BookingController extends Controller
     public function destroy(Booking $booking)
     {
         $booking->delete();
-        session()->flash('message', 'You have deleted one record');
 
         return back();
     }

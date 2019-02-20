@@ -26,12 +26,18 @@ class BookingController extends Controller
      */
     public function index()
     {
-        auth()->loginUsingId(1);
-
         if(auth()->user()->hasRole('client')) {
-            $bookings = auth()->user()->bookings()->with('car') ->get();
+            $bookings = auth()->user()
+                ->bookings()
+                ->where('start_time', '>', Carbon::now())
+                ->orderBy('start_time')
+                ->with('car')
+                ->get();
         } else {
-            $bookings = Booking::with('car')->get();
+            $bookings = Booking::with('car')
+                ->where('start_time', '>', Carbon::now())
+                ->orderBy('start_time')
+                ->get();
         }
 
         return view('bookings.index')

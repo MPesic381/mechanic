@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
+use App\Booking;
 use App\Car;
+use App\Policies\BookingPolicy;
 use App\Policies\CarPolicy;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -16,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Car::class => CarPolicy::class,
+        Booking::class => BookingPolicy::class,
     ];
 
     /**

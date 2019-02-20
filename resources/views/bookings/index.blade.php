@@ -28,9 +28,6 @@
                                 <a href="/bookings/{{ $booking->id }}" class="btn btn-info">Details</a>
                             </div>
                             <div class="btn-group">
-                                <a href="/bookings/{{ $booking->id }}/edit" class="btn btn-primary">Edit</a>
-                            </div>
-                            <div class="btn-group">
                                 <form action="/bookings/{{ $booking->id }}" method="post">
                                     @csrf
                                     @method('DELETE')
@@ -58,3 +55,6 @@
     </div>
 @endsection
 
+@section('script')
+
+@endsection

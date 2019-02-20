@@ -16,6 +16,7 @@ class BookingController extends Controller
     public function __construct()
     {
         $this->middleware('role:admin,client');
+        $this->authorizeResource(Booking::class, 'booking');
     }
 
     /**
@@ -25,13 +26,16 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::with('car')->get();
+        auth()->loginUsingId(1);
 
         if(auth()->user()->hasRole('client')) {
             $bookings = auth()->user()->bookings()->with('car') ->get();
+        } else {
+            $bookings = Booking::with('car')->get();
         }
 
-        return view('bookings.index')->withBookings($bookings);
+        return view('bookings.index')
+            ->withBookings($bookings);
     }
 
     /**
@@ -42,7 +46,6 @@ class BookingController extends Controller
     public function create()
     {
         $cars = auth()->user()->cars()->get();
-
         $services = Service::all();
 
         return view('bookings.create')
@@ -59,11 +62,8 @@ class BookingController extends Controller
     public function store(BookingStoreRequest $request)
     {
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
-
         $service = Service::findOrFail($request->service_id);
-
         $time = explode(':', $service->time_required);
-
         $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
 
         Booking::create([
@@ -81,45 +81,27 @@ class BookingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Booking $booking
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Booking $booking)
     {
-        return view('bookings.shows');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return view('bookings.show')
+            ->withBooking($booking);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Booking $booking
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Booking $booking)
     {
+        $booking->delete();
+        session()->flash('message', 'You have deleted one record');
 
+        return back();
     }
 }

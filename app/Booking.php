@@ -63,8 +63,6 @@ class Booking extends Model
             }
         }
 
-        return $time;
-
         return $bookings[count($bookings) - 1]->end_time;
     }
 }

@@ -25,7 +25,7 @@ class BookingStoreRequest extends FormRequest
     {
         return [
             'car_id' => 'required|exists:cars,id',
-            'service_id' => 'required',
+            'service_id' => 'required|exists:services,id',
             'start_time' => 'required|date_format:Y-m-d H:i'
         ];
     }

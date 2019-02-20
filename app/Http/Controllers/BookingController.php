@@ -53,19 +53,18 @@ class BookingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param BookingStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookingStoreRequest $request)
     {
-        // Y-m-d H:i
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
 
         $service = Service::findOrFail($request->service_id);
 
         $time = explode(':', $service->time_required);
 
-        $end_time = $start_time->addHours($time[0])->addMinutes($time[1]);
+        $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
 
         Booking::create([
             'car_id' => $request->car_id,

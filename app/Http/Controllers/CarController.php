@@ -15,7 +15,6 @@ class CarController extends Controller
     public function __construct()
     {
         $this->middleware(['auth', 'role:admin,client']);
-
         $this->authorizeResource(Car::class, 'car');
     }
 
@@ -26,10 +25,10 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
-
         if (auth()->user()->hasRole('client')) {
             $cars = auth()->user()->cars()->get();
+        } else {
+            $cars = Car::all();
         }
 
         return view('cars.index')->withCars($cars);
@@ -56,7 +55,6 @@ class CarController extends Controller
         auth()->user()->cars()->save(
             new Car($request->all())
         );
-
         session()->flash('message', 'You successfully inserted new car');
 
         return redirect()->route('cars.index');
@@ -94,7 +92,6 @@ class CarController extends Controller
     public function update(CarUpdateRequest $request, Car $car)
     {
         $car->update($request->all());
-
         session()->flash('message', 'Car successfully updated');
 
         return redirect()->route('cars.index');
@@ -110,7 +107,6 @@ class CarController extends Controller
     public function destroy(Car $car)
     {
         $car->delete();
-
         session()->flash('message', 'You have deleted one record');
 
         return back();

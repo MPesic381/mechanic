@@ -27,10 +27,10 @@ class CarUpdateRequest extends FormRequest
             'plate' => 'required|min:3|max:10',
             'manufacturer' => 'required|max:30',
             'model' => 'required|max:30',
-            'year' => 'required|integer|between:1980,2019|',
-            'kilometrage' => 'required|integer|between:1,500000',
-            'hp' => 'required|integer|between:10,999',
-            'cc' => 'required|integer|between:50,7000'
+            'year' => 'required|integer|between:1901,' . Carbon::now()->year,
+            'kilometrage' => 'required|integer|between:1,999999',
+            'hp' => 'required|integer|between:1,999',
+            'cc' => 'required|integer|between:49,7000'
         ];
     }
 }

@@ -34,9 +34,6 @@
                                <option value="{{ $year }}">{{ $year }}</option>
                            @endfor
                         </select>
-                        <div class="invalid-feedback">
-                            Please select a valid country.
-                        </div>
                     </div>
 
                     <div class="col-md-3 mb-3">

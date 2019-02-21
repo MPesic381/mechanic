@@ -8,8 +8,6 @@ use App\Http\Requests\BookingStoreRequest;
 use App\Service;
 use App\User;
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
@@ -81,7 +79,7 @@ class BookingController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'role_id' => \App\Role::where('name', 'client')->first()->id
+                'role_id' => \App\Role::where('name', 'client')->first()
             ]);
 
             $car = $user->cars()->save(

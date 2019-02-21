@@ -30,7 +30,7 @@ class BookingPolicy
      */
     public function create(User $user)
     {
-        auth()->user();
+        return true;
     }
 
     /**

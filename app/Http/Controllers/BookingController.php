@@ -10,6 +10,7 @@ use App\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
@@ -72,14 +73,43 @@ class BookingController extends Controller
         $time = explode(':', $service->time_required);
         $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
 
-        Booking::create([
-            'car_id' => $request->car_id,
-            'service_id' => $request->service_id,
-            'start_time' => $start_time,
-            'end_time' => $end_time
-        ]);
 
-        session()->flash('message', 'You have just book your service');
+        if($request->bookWithRegister) {
+            DB::beginTransaction();
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role_id' => \App\Role::where('name', 'client')->first()->id
+            ]);
+
+            $car = $user->cars()->save(
+                new Car($request->all())
+            );
+
+            $car->bookings()->save(
+                new Booking([
+                    'car_id' => $request->car_id,
+                    'service_id' => $request->service_id,
+                    'start_time' => $start_time,
+                    'end_time' => $end_time
+                ])
+            );
+
+            DB::commit();
+        } else {
+
+            Booking::create([
+                'car_id' => $request->car_id,
+                'service_id' => $request->service_id,
+                'start_time' => $start_time,
+                'end_time' => $end_time
+            ]);
+
+            session()->flash('message', 'You have just book your service');
+
+        }
 
         return redirect('/bookings');
     }

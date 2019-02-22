@@ -10,7 +10,7 @@
             <h4 class="mb-3"></h4>
             <form action="/bookings" id="bookingForm" method="post" >
                 @csrf
-                <div id="bigForm" style="display: none">
+                <div id="bigForm" @if(old('bookWithRegister') == 0) style="display: none" @endif>
                     <!-- Form Create new user -->
                     <div class="row">
                         <div class="col-md-3">
@@ -161,7 +161,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Arrange booking</button>
                         </div>
-                        <input type="text" id="bookWithRegister" name="bookWithRegister" value="0">
+                        <input type="hidden" id="bookWithRegister" name="bookWithRegister" value="{{ old('bookWithRegister', 0) }}">
                     </div>
                 </div>
             </form>

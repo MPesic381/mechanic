@@ -22,6 +22,10 @@ class Booking extends Model
         return $this->belongsTo(Service::class);
     }
 
+    public function ownedBy($user) {
+        return $user->id == $this->car->user->id;
+    }
+
     protected static function isAvailable($start, $duration)
     {
         $end = (new Carbon($start))->addMinutes($duration);

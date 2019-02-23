@@ -19,7 +19,7 @@ class BookingPolicy
      */
     public function view(User $user, Booking $booking)
     {
-        return $user->owns($booking) || $user->hasRole('admin');
+        return $booking->ownedBy($user)|| $user->hasRole('admin');
     }
 
     /**
@@ -42,7 +42,7 @@ class BookingPolicy
      */
     public function update(User $user, Booking $booking)
     {
-        return $user->owns($booking) || $user->hasRole('admin');
+        return $booking->ownedBy($user) || $user->hasRole('admin');
     }
 
     /**
@@ -54,7 +54,7 @@ class BookingPolicy
      */
     public function delete(User $user, Booking $booking)
     {
-        return $user->owns($booking) || $user->hasRole('admin');
+        return $booking->ownedBy($user) || $user->hasRole('admin');
     }
 
     /**

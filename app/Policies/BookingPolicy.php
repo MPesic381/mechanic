@@ -34,18 +34,6 @@ class BookingPolicy
     }
 
     /**
-     * Determine whether the user can update the booking.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Booking  $booking
-     * @return mixed
-     */
-    public function update(User $user, Booking $booking)
-    {
-        return $booking->ownedBy($user) || $user->hasRole('admin');
-    }
-
-    /**
      * Determine whether the user can delete the booking.
      *
      * @param  \App\User  $user

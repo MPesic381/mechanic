@@ -53,17 +53,6 @@ class ServiceController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param Service $service
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Service $service)
-    {
-        return redirect()->route('services.index');
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param Service $service

@@ -23,5 +23,5 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::resource('cars', 'CarController');
-Route::resource('services', 'ServiceController');
+Route::resource('services', 'ServiceController')->except(['show']);
 Route::resource('bookings', 'BookingController')->except(['edit', 'update']);

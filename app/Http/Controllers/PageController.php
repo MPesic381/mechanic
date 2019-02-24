@@ -8,6 +8,8 @@ class PageController extends Controller
 {
     public function index()
     {
+//        dd(auth()->user());
+        
         return view('pages.index');
     }
 }

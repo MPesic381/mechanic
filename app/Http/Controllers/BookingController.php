@@ -8,14 +8,14 @@ use App\Http\Requests\BookingStoreRequest;
 use App\Service;
 use App\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin,client');
+        $this->middleware('auth');
+        $this->middleware('role:admin')->except('index', 'show');
         $this->authorizeResource(Booking::class, 'booking');
     }
 
@@ -33,11 +33,13 @@ class BookingController extends Controller
                 ->orderBy('start_time')
                 ->with('car')
                 ->get();
-        } else {
+        } else if (auth()->user()->hasRole('admin')) {
             $bookings = Booking::with('car')
                 ->where('start_time', '>', Carbon::now())
                 ->orderBy('start_time')
                 ->get();
+        } else {
+            return abort(403);
         }
 
         return view('bookings.index')
@@ -51,12 +53,7 @@ class BookingController extends Controller
      */
     public function create()
     {
-        $cars = auth()->user()->cars()->get();
-        $services = Service::all();
-
-        return view('bookings.create')
-            ->withCars($cars)
-            ->withServices($services);
+        return view('bookings.create');
     }
 
     /**
@@ -65,40 +62,39 @@ class BookingController extends Controller
      * @param BookingStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookingStoreRequest $request)
     {
-        return $request;
-        
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
         $service = Service::findOrFail($request->service_id);
         $time = explode(':', $service->time_required);
         $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
 
-
         if($request->bookWithRegister) {
-            DB::beginTransaction();
-
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'role_id' => \App\Role::where('name', 'client')->first()
-            ]);
-
-            $car = $user->cars()->save(
-                new Car($request->all())
-            );
-
-            $car->bookings()->save(
-                new Booking([
-                    'car_id' => $request->car_id,
-                    'service_id' => $request->service_id,
-                    'start_time' => $start_time,
-                    'end_time' => $end_time
-                ])
-            );
-
-            DB::commit();
+            if(auth()->user()->hasRole('admin')) {
+                DB::beginTransaction();
+    
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                    'role_id' => \App\Role::where('name', 'client')->first()->id
+                ]);
+    
+                $car = $user->cars()->save(
+                    new Car($request->all())
+                );
+    
+                $car->bookings()->save(
+                    new Booking([
+                        'car_id' => $request->car_id,
+                        'service_id' => $request->service_id,
+                        'start_time' => $start_time,
+                        'end_time' => $end_time
+                    ])
+                );
+    
+                DB::commit();
+            }
         } else {
 
             Booking::create([
@@ -109,7 +105,6 @@ class BookingController extends Controller
             ]);
 
             session()->flash('message', 'You have just book your service');
-
         }
 
         return redirect('/bookings');

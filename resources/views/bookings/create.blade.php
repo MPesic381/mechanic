@@ -111,30 +111,31 @@
                     <hr class="mb-4">
                 </div>
                 <!-- Form for add booking -->
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row" id="existingUser">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="service">Service</label>
-                            <select name="service_id" id="service_id" class="custom-select d-block w-100">
-                                @foreach($services as $service)
-                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
-                                @endforeach
+                            <label for="client">Client:</label>
+                            <select id="users" class="form-control">
                             </select>
                         </div>
                     </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group" id="dropVehiclePlate">
-                            <label for="car">Car</label>
-                            <select name="car_id" id="" class="custom-select d-block w-100">
-                                @foreach($cars as $car)
-                                    <option value="{{ $car->id }}">{{ $car->plate }}</option>
-                                @endforeach
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="car">Car:</label>
+                            <select id="cars" class="form-control" name="car_id">
                             </select>
                         </div>
                     </div>
                 </div>
-                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="service">Service:</label>
+                            <select id="service" class="form-control" name="service_id">
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <h4>Date & time</h4>
@@ -168,17 +169,19 @@
             @include('layout.errors')
         </div>
         <div class="col-md-3">
-            <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Create new client</h4>
-                        <p class="card-text">If you want to create new client you can do it from here</p>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary" id="btnCreateNewUser">Create new client</button>
+            @if(auth()->user()->hasRole('admin'))
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                                <h4 class="card-title">Create new client</h4>
+                                <p class="card-text">If you want to create new client you can do it from here</p>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary" id="btnCreateNewUser">Create new client</button>
+                                </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 @endsection
@@ -186,6 +189,83 @@
 @section('script')
     <script>
         $(function () {
+
+            $('#users').select2({
+                ajax: {
+                    type: "GET",
+                    url: window.location.protocol + "//" + window.location.host + "/api/users/",
+                    data: function (params) {
+                        return {
+                            name: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        var len = Object.keys(data).length;
+                        if (len > 0) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        }
+                    }
+                }
+            });
+
+            $('#cars').select2({
+                ajax: {
+                    type: "GET",
+                    url: window.location.protocol + "//" + window.location.host + "/api/cars/",
+                    data: function (params) {
+                        return {
+                            user_id: $("#users").val(),
+                            plate: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        var len = Object.keys(data).length;
+                        if (len > 0) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.plate + ' | ' + item.manufacturer + ' | ' + item.model,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        }
+                    }
+                }
+            });
+
+            $('#service').select2({
+                ajax: {
+                    type: "GET",
+                    url: window.location.protocol + "//" + window.location.host + "/api/services/",
+                    data: function (params) {
+                        return {
+                            name: params.term
+                        };
+                    },
+                    processResults: function (data) {
+                        var len = Object.keys(data).length;
+                        if (len > 0) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        }
+                    }
+                }
+            });
+
             $('#datetimepicker1').datetimepicker({
                 format: 'YYYY-MM-DD HH:mm'
             });
@@ -208,7 +288,7 @@
             jQuery(document).ready(function(){
                 $('#btnCreateNewUser').on('click', function() {
                     $('#bigForm').toggle();
-                    $('#dropVehiclePlate').toggle();
+                    $('#existingUser').toggle();
 
                     var hiddenField = $('#bookWithRegister'),
                         val = hiddenField.val();

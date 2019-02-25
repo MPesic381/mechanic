@@ -11,10 +11,10 @@ class CarController extends Controller
     public function index()
     {
         $user = request('user_id');
+        $model = request('model');
     
-        $cars = Car::where('user_id', $user)->get();
+        $cars = Car::where('user_id', $user)->where('model', 'like', $model . '%')->get();
     
-        
         return response()->json($cars, 200);
     }
 }

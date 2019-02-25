@@ -20,9 +20,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $term = request('term');
+        $name = request('name');
         
-        $services = Service::where('name', 'like', $term . '%')->get();
+        $services = Service::where('name', 'like', $name . '%')->get();
 
         return response()->json($services, 200);
     }

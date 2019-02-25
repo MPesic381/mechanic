@@ -8,6 +8,7 @@ use App\Http\Requests\BookingStoreRequest;
 use App\Service;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
@@ -64,8 +65,10 @@ class BookingController extends Controller
      * @param BookingStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(BookingStoreRequest $request)
+    public function store(Request $request)
     {
+        return $request;
+        
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
         $service = Service::findOrFail($request->service_id);
         $time = explode(':', $service->time_required);

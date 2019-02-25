@@ -111,7 +111,7 @@
                     <hr class="mb-4">
                 </div>
                 <!-- Form for add booking -->
-                <div class="row" id="existingUser">
+                <div class="row" id="existingUser" @if(old('bookWithRegister') == 1) style="display: none" @endif>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="client">Client:</label>

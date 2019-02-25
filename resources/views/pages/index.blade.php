@@ -5,5 +5,5 @@
 @endsection
 
 @section('content')
-
+    <h3>Form for user booking will go here</h3>
 @endsection

@@ -20,6 +20,7 @@
                     </li>
                 @endif
                 @if (auth()->check())
+                    <span class="">{{ auth()->user()->name }}</span>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/cars">Cars</a>
                     </li>

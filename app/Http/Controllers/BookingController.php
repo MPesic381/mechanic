@@ -70,31 +70,29 @@ class BookingController extends Controller
         $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
 
         if($request->bookWithRegister) {
-            if(auth()->user()->hasRole('admin')) {
-                DB::beginTransaction();
-    
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'role_id' => \App\Role::where('name', 'client')->first()->id
-                ]);
-    
-                $car = $user->cars()->save(
-                    new Car($request->all())
-                );
-    
-                $car->bookings()->save(
-                    new Booking([
-                        'car_id' => $request->car_id,
-                        'service_id' => $request->service_id,
-                        'start_time' => $start_time,
-                        'end_time' => $end_time
-                    ])
-                );
-    
-                DB::commit();
-            }
+            
+            DB::beginTransaction();
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role_id' => \App\Role::where('name', 'client')->first()->id
+            ]);
+            $car = $user->cars()->save(
+                new Car($request->all())
+            );
+            $car->bookings()->save(
+                new Booking([
+                    'car_id' => $request->car_id,
+                    'service_id' => $request->service_id,
+                    'start_time' => $start_time,
+                    'end_time' => $end_time
+                ])
+            );
+            
+            DB::commit();
+            
+            session()->flash('message', 'You created new user and car and made a booking for him');
         } else {
 
             Booking::create([
@@ -104,7 +102,7 @@ class BookingController extends Controller
                 'end_time' => $end_time
             ]);
 
-            session()->flash('message', 'You have just book your service');
+            session()->flash('message', 'You made a booking for existing user');
         }
 
         return redirect('/bookings');

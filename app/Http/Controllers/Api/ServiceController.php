@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class ServiceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::all();
+        $term = request('term');
+        
+        $services = Service::where('name', 'like', $term . '%')->get();
 
         return response()->json($services, 200);
     }

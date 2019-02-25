@@ -23,3 +23,9 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::resource('cars', 'CarController');
 Route::resource('services', 'ServiceController')->except(['show']);
 Route::resource('bookings', 'BookingController')->except(['edit', 'update']);
+
+
+
+Route::get('/api/services', 'Api\ServiceController@index');
+Route::get('/api/users', 'Api\UserController@index');
+Route::get('/api/cars', 'Api\CarController@index');

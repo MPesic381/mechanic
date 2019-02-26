@@ -65,11 +65,10 @@ class BookingController extends Controller
     public function store(BookingStoreRequest $request)
     {
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
-        $service = Service::findOrFail($request->service_id);
-        $time = explode(':', $service->time_required);
-        $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
+        $end_time = Booking::ends($start_time, $request->service_id);
 
         if($request->bookWithRegister) {
+            
             
             DB::beginTransaction();
             $user = User::create([
@@ -94,7 +93,6 @@ class BookingController extends Controller
             
             session()->flash('message', 'You created new user and car and made a booking for him');
         } else {
-
             Booking::create([
                 'car_id' => $request->car_id,
                 'service_id' => $request->service_id,

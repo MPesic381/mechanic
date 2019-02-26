@@ -25,7 +25,7 @@ class CarUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'plate' => 'required|min:3|max:10',
+            'plate' => 'required|min:3|max:10|unique:cars,plate',
             'manufacturer' => 'required|max:30',
             'model' => 'required|max:30',
             'year' => 'required|integer|between:1901,' . Carbon::now()->year,

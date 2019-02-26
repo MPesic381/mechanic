@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ServiceStoreRequest;
 use App\Http\Requests\ServiceUpdateRequest;
 use App\Service;
+use App\Services\ServiceService;
 
 class ServiceController extends Controller
 {
-
+    protected $service;
+    
     /**
      * ServiceController constructor.
      */
     public function __construct()
     {
         $this->middleware('role:admin');
+        
+        $this->service = new ServiceService();
     }
 
     /**
@@ -24,9 +28,10 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::all();
+        $services = $this->service->all();
 
-        return view('services.index')->withServices($services);
+        return view('services.index')
+            ->withServices($services);
     }
 
     /**
@@ -47,9 +52,10 @@ class ServiceController extends Controller
      */
     public function store(ServiceStoreRequest $request)
     {
-        Service::create($request->all());
-
-        return redirect()->route('services.index');
+        $this->service->make($request->validated());
+        
+        return redirect()->route('services.index')
+            ->withMessage('New service successfully inserted');
     }
 
     /**
@@ -72,25 +78,25 @@ class ServiceController extends Controller
      */
     public function update(ServiceUpdateRequest $request, Service $service)
     {
-        $service->update($request->all());
-
-        session()->flash('message', 'Service successfully updated');
-
-        return redirect()->route('services.index');
+        $this->service->update($request->validated(), $service);
+        
+        return redirect()
+            ->route('services.index')
+            ->withMessage('Service successfully updated');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Service $service
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Service $service)
     {
-        Service::destroy($id);
+        $this->service->delete($service);
 
-        session()->flash('message', 'You have deleted one record');
-
-        return back();
+        return back()
+            ->withMessage('You have deleted one record');
     }
 }

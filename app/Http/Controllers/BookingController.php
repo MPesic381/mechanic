@@ -5,19 +5,21 @@ namespace App\Http\Controllers;
 use App\Booking;
 use App\Car;
 use App\Http\Requests\BookingStoreRequest;
-use App\Service;
+use App\Services\BookingService;
 use App\Services\UserService;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
+    protected $service;
+    
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role:admin')->except('index', 'show');
         $this->authorizeResource(Booking::class, 'booking');
+        $this->service = new BookingService();
     }
 
     /**
@@ -27,21 +29,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole('client')) {
-            $bookings = auth()->user()
-                ->bookings()
-                ->where('start_time', '>', Carbon::now())
-                ->orderBy('start_time')
-                ->with('car')
-                ->get();
-        } else if (auth()->user()->hasRole('admin')) {
-            $bookings = Booking::with('car')
-                ->where('start_time', '>', Carbon::now())
-                ->orderBy('start_time')
-                ->get();
-        } else {
-            return abort(403);
-        }
+        $bookings = $this->service->all();
 
         return view('bookings.index')
             ->withBookings($bookings);
@@ -75,7 +63,6 @@ class BookingController extends Controller
             
             $user = (new UserService())
                 ->make($request->validated());
-            
             
             $car = $user->cars()->save(
                 new Car($request->validated())

@@ -6,6 +6,7 @@ use App\Booking;
 use App\Car;
 use App\Http\Requests\BookingStoreRequest;
 use App\Service;
+use App\Services\UserService;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -71,14 +72,13 @@ class BookingController extends Controller
             
             
             DB::beginTransaction();
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'role_id' => \App\Role::where('name', 'client')->first()->id
-            ]);
+            
+            $user = (new UserService())
+                ->make($request->validated());
+            
+            
             $car = $user->cars()->save(
-                new Car($request->all())
+                new Car($request->validated())
             );
             $car->bookings()->save(
                 new Booking([

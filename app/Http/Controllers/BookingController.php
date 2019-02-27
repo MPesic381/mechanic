@@ -53,40 +53,35 @@ class BookingController extends Controller
      */
     public function store(BookingStoreRequest $request)
     {
-        $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
+        $start_time = Booking::setAvailable($request->start_time, $request->service_id);
         $end_time = Booking::ends($start_time, $request->service_id);
+        
+        $parameters = [
+            'car_id' => $request->car_id,
+            'service_id' => $request->service_id,
+            'start_time' => $start_time,
+            'end_time' => $end_time
+        ];
 
+        $this->service->make($parameters);
+        
         if($request->bookWithRegister) {
-            
-            
             DB::beginTransaction();
             
             $user = (new UserService())
                 ->make($request->validated());
-            
             $car = $user->cars()->save(
                 new Car($request->validated())
             );
             $car->bookings()->save(
-                new Booking([
-                    'car_id' => $request->car_id,
-                    'service_id' => $request->service_id,
-                    'start_time' => $start_time,
-                    'end_time' => $end_time
-                ])
+                new Booking($parameters)
             );
             
             DB::commit();
-            
             session()->flash('message', 'You created new user and car and made a booking for him');
         } else {
-            Booking::create([
-                'car_id' => $request->car_id,
-                'service_id' => $request->service_id,
-                'start_time' => $start_time,
-                'end_time' => $end_time
-            ]);
-
+            $this->service->make($parameters);
+            
             session()->flash('message', 'You made a booking for existing user');
         }
 
@@ -114,8 +109,7 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        $booking->delete();
-
+        $this->service->delete($booking);
         return back();
     }
 }

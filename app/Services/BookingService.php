@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Booking;
+use App\Car;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BookingService implements CrudableInterface
 {
@@ -39,9 +41,26 @@ class BookingService implements CrudableInterface
      *
      * @return void
      */
-    public function make($parameters): void
+    public function make($parameters) : void
     {
-        // TODO: Implement make() method.
+        Booking::create($parameters);
+    }
+    
+    public function makeWithUser($parameters)
+    {
+        DB::beginTransaction();
+    
+        $user = (new UserService())
+            ->make($parameters);
+    
+        $car = $user->cars()->save(
+            new Car($parameters)
+        );
+        $car->bookings()->save(
+            new Booking($parameters)
+        );
+    
+        DB::commit();
     }
     
     /**
@@ -67,6 +86,6 @@ class BookingService implements CrudableInterface
      */
     public function delete($model): void
     {
-        // TODO: Implement delete() method.
+        $model->delete($model);
     }
 }

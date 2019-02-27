@@ -27,6 +27,7 @@ class Booking extends Model
     }
     
     public static function ends($start_time, $service_id) {
+        $start_time = new Carbon($start_time);
         $service = Service::findOrFail($service_id);
         $time = explode(':', $service->time_required);
         return $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
@@ -74,7 +75,7 @@ class Booking extends Model
             }
         }
 
-        return $bookings[count($bookings) - 1]->end_time;
+        return new Carbon($bookings[count($bookings) - 1]->end_time);
     }
     
     

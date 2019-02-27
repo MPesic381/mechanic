@@ -16,23 +16,24 @@ class CreateWorksTable extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->unsignedInteger('cars_id');
-            $table->unsignedInteger('services_id');
+            $table->unsignedInteger('car_id');
+            $table->unsignedInteger('service_id');
             $table->integer('kilometrage');
+            $table->date('serviced_at');
     
-            $table->index(["cars_id"], 'fk_works_cars1_idx');
+            $table->index(["car_id"], 'fk_works_cars1_idx');
     
-            $table->index(["services_id"], 'fk_works_services1_idx');
+            $table->index(["service_id"], 'fk_works_services1_idx');
             $table->softDeletes();
             $table->nullableTimestamps();
     
     
-            $table->foreign('cars_id', 'fk_works_cars1_idx')
+            $table->foreign('car_id', 'fk_works_cars1_idx')
                 ->references('id')->on('cars')
                 ->onDelete('no action')
                 ->onUpdate('no action');
     
-            $table->foreign('services_id', 'fk_works_services1_idx')
+            $table->foreign('service_id', 'fk_works_services1_idx')
                 ->references('id')->on('services')
                 ->onDelete('no action')
                 ->onUpdate('no action');

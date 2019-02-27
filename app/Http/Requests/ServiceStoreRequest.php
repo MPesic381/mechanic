@@ -24,7 +24,7 @@ class ServiceStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:30',
+            'name' => 'required|max:30|unique:services,name',
             'time_required' => 'required|date_format:H:i',
             'warranty' => 'required|numeric|max:150000',
             'cost' => 'required|numeric|max:50000'

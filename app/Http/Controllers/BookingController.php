@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use App\Booking;
 use App\Car;
 use App\Http\Requests\BookingStoreRequest;
-use App\Service;
-use App\User;
+use App\Services\BookingService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
+    protected $service;
+    
     public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role:admin')->except('index', 'show');
         $this->authorizeResource(Booking::class, 'booking');
+        $this->service = new BookingService();
     }
 
     /**
@@ -26,21 +29,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        if(auth()->user()->hasRole('client')) {
-            $bookings = auth()->user()
-                ->bookings()
-                ->where('start_time', '>', Carbon::now())
-                ->orderBy('start_time')
-                ->with('car')
-                ->get();
-        } else if (auth()->user()->hasRole('admin')) {
-            $bookings = Booking::with('car')
-                ->where('start_time', '>', Carbon::now())
-                ->orderBy('start_time')
-                ->get();
-        } else {
-            return abort(403);
-        }
+        $bookings = $this->service->all();
 
         return view('bookings.index')
             ->withBookings($bookings);
@@ -64,44 +53,35 @@ class BookingController extends Controller
      */
     public function store(BookingStoreRequest $request)
     {
-        $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
-        $service = Service::findOrFail($request->service_id);
-        $time = explode(':', $service->time_required);
-        $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
+        $start_time = Booking::setAvailable($request->start_time, $request->service_id);
+        $end_time = Booking::ends($start_time, $request->service_id);
+        
+        $parameters = [
+            'car_id' => $request->car_id,
+            'service_id' => $request->service_id,
+            'start_time' => $start_time,
+            'end_time' => $end_time
+        ];
 
+        $this->service->make($parameters);
+        
         if($request->bookWithRegister) {
-            
             DB::beginTransaction();
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'role_id' => \App\Role::where('name', 'client')->first()->id
-            ]);
+            
+            $user = (new UserService())
+                ->make($request->validated());
             $car = $user->cars()->save(
-                new Car($request->all())
+                new Car($request->validated())
             );
             $car->bookings()->save(
-                new Booking([
-                    'car_id' => $request->car_id,
-                    'service_id' => $request->service_id,
-                    'start_time' => $start_time,
-                    'end_time' => $end_time
-                ])
+                new Booking($parameters)
             );
             
             DB::commit();
-            
             session()->flash('message', 'You created new user and car and made a booking for him');
         } else {
-
-            Booking::create([
-                'car_id' => $request->car_id,
-                'service_id' => $request->service_id,
-                'start_time' => $start_time,
-                'end_time' => $end_time
-            ]);
-
+            $this->service->make($parameters);
+            
             session()->flash('message', 'You made a booking for existing user');
         }
 
@@ -129,8 +109,7 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        $booking->delete();
-
+        $this->service->delete($booking);
         return back();
     }
 }

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Car;
 use App\Http\Requests\CarStoreRequest;
 use App\Http\Requests\CarUpdateRequest;
+use App\Services\CarService;
 
 class CarController extends Controller
 {
+    protected $service;
 
     /**
      * CarController constructor.
@@ -16,6 +18,8 @@ class CarController extends Controller
     {
         $this->middleware(['auth', 'role:admin,client']);
         $this->authorizeResource(Car::class, 'car');
+        
+        $this->service = new CarService();
     }
 
     /**
@@ -25,12 +29,8 @@ class CarController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole('client')) {
-            $cars = auth()->user()->cars()->get();
-        } else {
-            $cars = Car::all();
-        }
-
+        $cars = $this->service->all();
+        
         return view('cars.index')->withCars($cars);
     }
 
@@ -52,12 +52,10 @@ class CarController extends Controller
      */
     public function store(CarStoreRequest $request)
     {
-        auth()->user()->cars()->save(
-            new Car($request->all())
-        );
-        session()->flash('message', 'You successfully inserted new car');
-
-        return redirect()->route('cars.index');
+        $this->service->make($request->validated());
+        
+        return redirect()->route('cars.index')
+            ->withMessage('You successfully inserted new car');
     }
 
     /**
@@ -91,10 +89,12 @@ class CarController extends Controller
      */
     public function update(CarUpdateRequest $request, Car $car)
     {
+        $this->service->update($request->validated(), $car);
+        
         $car->update($request->all());
-        session()->flash('message', 'Car successfully updated');
 
-        return redirect()->route('cars.index');
+        return redirect()->route('cars.index')
+            ->withMessage('Car successfully updated');
     }
 
     /**
@@ -106,9 +106,9 @@ class CarController extends Controller
      */
     public function destroy(Car $car)
     {
-        $car->delete();
-        session()->flash('message', 'You have deleted one record');
+        $this->service->delete($car);
 
-        return back();
+        return back()
+            ->withMessage('You have deleted one record');
     }
 }

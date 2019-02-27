@@ -25,6 +25,13 @@ class Booking extends Model
     public function ownedBy($user) {
         return $user->id == $this->car->user->id;
     }
+    
+    public static function ends($start_time, $service_id) {
+        $start_time = new Carbon($start_time);
+        $service = Service::findOrFail($service_id);
+        $time = explode(':', $service->time_required);
+        return $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
+    }
 
     protected static function isAvailable($start, $duration)
     {
@@ -68,8 +75,10 @@ class Booking extends Model
             }
         }
 
-        return $bookings[count($bookings) - 1]->end_time;
+        return new Carbon($bookings[count($bookings) - 1]->end_time);
     }
+    
+    
 
     public function delete()
     {

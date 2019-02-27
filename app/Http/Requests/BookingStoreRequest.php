@@ -37,7 +37,9 @@ class BookingStoreRequest extends FormRequest
                 'year' => 'required|integer|between:1901,' . Carbon::now()->year,
                 'kilometrage' => 'required|integer|between:1,999999',
                 'hp' => 'required|integer|between:1,999',
-                'cc' => 'required|integer|between:49,7000'
+                'cc' => 'required|integer|between:49,7000',
+                'service_id' => 'required|exists:services,id',
+                'start_time' => 'required|date_format:Y-m-d H:i'
             ];
         } else {
             return [

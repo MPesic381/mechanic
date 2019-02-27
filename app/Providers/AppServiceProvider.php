@@ -14,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('cars.partials.service_history', function($view) {
-            $view->with('works', \App\Work::all());
+            $car = request()->route()->parameters()['car'];
+            $view->withWorks($car->works()->get());
         });
     }
 

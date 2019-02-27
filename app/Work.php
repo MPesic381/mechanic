@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Work extends Model
 {
+    protected $fillable = [
+        'car_id', 'service_id', 'kilometrage',
+    ];
+    
     public function service()
     {
         return $this->belongsTo(Service::class);

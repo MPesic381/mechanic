@@ -51,7 +51,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Car options</h4>
                     <p class="card-text">Some example text. Some example text.</p>
-                    <a href="/cars/create" class="btn btn-primary">Insert</a>
+                    <a href="/cars/{{ $car->id }}/works/create" class="btn btn-primary">New Service</a>
                 </div>
             </div>
         </div>

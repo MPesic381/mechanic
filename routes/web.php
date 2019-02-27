@@ -29,3 +29,5 @@ Route::get('/api/users', 'Api\UserController@index');
 Route::get('/api/cars', 'Api\CarController@index');
 
 Route::post('/api/booking', 'Api\BookingController@store');
+
+Route::resource('/cars/{car}/works', 'WorkController')->only('create', 'store');

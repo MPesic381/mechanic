@@ -15,7 +15,7 @@
                     <th scope="col" class="col-1">Name</th>
                     <th scope="col" class="col-1">Warranty</th>
                     <th scope="col" class="col-1">Cost</th>
-                    <th scope="col" class="col-2">Action</th>
+                    <th scope="col" class="col-1">Action</th>
                 </tr>
                 </thead>
 
@@ -25,9 +25,6 @@
                         <td>{{ $service->warranty }} km</td>
                         <td>{{ $service->cost }} RSD</td>
                         <td>
-                            <div class="btn-group">
-                                <a href="/services/{{ $service->id }}" class="btn btn-info">Details</a>
-                            </div>
                             <div class="btn-group">
                                 <a href="/services/{{ $service->id }}/edit" class="btn btn-primary">Edit</a>
                             </div>

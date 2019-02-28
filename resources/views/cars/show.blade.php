@@ -59,6 +59,12 @@
                             Enter new kilometrage
                         </button>
                     </div>
+                    <p>Check when you need go to service</p>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalService">
+                            Needs service
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -69,6 +75,7 @@
         </div>
     </div>
     @include('cars.partials.modal_kilometrage')
+    @include('cars.partials.modal_service')
 @endsection
 
 @section('script')

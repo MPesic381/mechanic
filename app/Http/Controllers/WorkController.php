@@ -28,10 +28,14 @@ class WorkController extends Controller
      */
     public function store(Car $car, Request $request)
     {
+//        return $request->all();
+        
         $car->works()->save(
             new Work($request->all())
         );
         
-        return 'Success';
+//        return redirect('/cars/' . $car->id);
+        
+        return redirect()->route('cars.show', compact('car'));
     }
 }

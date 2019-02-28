@@ -24,6 +24,17 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label for="date">Date of service</label>
+                        <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" name="serviced_at"/>
+                            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
                         <button class="btn btn-primary form-control">Submit</button>
                     </div>
                 </div>
@@ -57,6 +68,12 @@
                     }
                 }
             }
+        });
+
+        $(function () {
+            $('#datetimepicker4').datetimepicker({
+                format: 'YYYY-MM-DD'
+            });
         });
     </script>
 @endsection

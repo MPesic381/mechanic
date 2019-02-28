@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Work extends Model
 {
     protected $fillable = [
-        'car_id', 'service_id', 'kilometrage',
+        'car_id', 'service_id', 'kilometrage', 'serviced_at',
     ];
     
     public function service()

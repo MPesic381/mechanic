@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     {
         view()->composer('cars.partials.service_history', function($view) {
             $car = request()->route()->parameters()['car'];
-            $view->withWorks($car->works()->get());
+            $view->withWorks($car->works()->orderBy('serviced_at', 'DESC')->get());
         });
     }
 

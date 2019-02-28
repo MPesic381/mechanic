@@ -27,6 +27,7 @@ Route::resource('bookings', 'BookingController')->except(['edit', 'update']);
 Route::get('/api/services', 'Api\ServiceController@index');
 Route::get('/api/users', 'Api\UserController@index');
 Route::get('/api/cars', 'Api\CarController@index');
+Route::post('/api/cars/{car}/updateKilometrage', 'Api\CarController@updateKilometrage');
 
 Route::post('/api/booking', 'Api\BookingController@store');
 

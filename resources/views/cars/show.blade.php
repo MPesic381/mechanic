@@ -51,7 +51,14 @@
                 <div class="card-body">
                     <h4 class="card-title">Car options</h4>
                     <p class="card-text">Some example text. Some example text.</p>
-                    <a href="/cars/{{ $car->id }}/works/create" class="btn btn-primary">New Service</a>
+                    <div class="form-group">
+                        <a href="/cars/{{ $car->id }}/works/create" class="btn btn-primary">New Service</a>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalKilometrage">
+                            Enter new kilometrage
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,5 +68,46 @@
             <a href="/cars" class="btn btn-primary">Back</a>
         </div>
     </div>
+    @include('cars.partials.modal_kilometrage')
 @endsection
 
+@section('script')
+    <script>
+        $('#submitKilometrage').click(function (e) {
+
+            e.preventDefault();
+            updateKilometrageForm = $('#updateKilometrageForm')
+
+            $.ajax({
+                method: "POST",
+                url: window.location.protocol + "//" + window.location.host + "/api/cars/{{ $car->id }}/updateKilometrage",
+                data: updateKilometrageForm.serialize(),
+                dataType: 'json',
+
+                success: function (response) {
+                    console.log(response);
+                    $('#form-info').html(
+                        '<div class="alert alert-info">' + response + '</div>'
+                    )
+
+                    $('#submitKilometrage').attr('disabled', 'disabled')
+                },
+
+                error: function (xhr) {
+                    var errors = (JSON.parse(xhr.responseText).errors);
+
+                    errorsHtml = '<div class="alert alert-danger"><ul>';
+
+                    $.each( errors, function( key, value ) {
+                        errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                    });
+
+                    errorsHtml += '</ul></div>';
+
+                    $('#form-info').html( errorsHtml )
+                }
+
+            })
+        })
+    </script>
+@endsection

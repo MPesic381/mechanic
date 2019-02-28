@@ -24,7 +24,7 @@ class ServiceUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:30|unique:services,name',
+            'name' => 'required|max:30|unique:services,name,' . $this->service->id,
             'time_required' => 'required|date_format:H:i',
             'warranty' => 'required|numeric|max:150000',
             'cost' => 'required|numeric|max:50000'

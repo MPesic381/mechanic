@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Car;
+use App\Http\Requests\WorkStoreRequest;
 use App\Work;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class WorkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Car $car, Request $request)
+    public function store(Car $car, WorkStoreRequest $request)
     {
 //        return $request->all();
         

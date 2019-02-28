@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class WorkController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Work::class, 'work');
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -20,22 +25,19 @@ class WorkController extends Controller
         return view('works.create')
             ->withCar($car);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Car $car
+     * @param WorkStoreRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(Car $car, WorkStoreRequest $request)
     {
-//        return $request->all();
-        
         $car->works()->save(
             new Work($request->all())
         );
-        
-//        return redirect('/cars/' . $car->id);
         
         return redirect()->route('cars.show', compact('car'));
     }

@@ -17,6 +17,14 @@ class AppServiceProvider extends ServiceProvider
             $car = request()->route()->parameters()['car'];
             $view->withWorks($car->works()->orderBy('serviced_at', 'DESC')->get());
         });
+        
+        view()->composer('cars.partials.modal_service', function($view) {
+            $car = request()->route()->parameters()['car'];
+            
+            $services = $car->works()->whereHas('service')->orderBy('kilometrage')->get()->unique('service_id');
+    
+            $view->withServices($services);
+        });
     }
 
     /**

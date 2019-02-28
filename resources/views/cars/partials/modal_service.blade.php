@@ -20,10 +20,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>123</td>
-                                    <td>kilometers</td>
-                                </tr>
+                                @foreach($services as $service)
+                                    <tr>
+                                        <td>{{ $service->service->name }}</td>
+                                        <td>{{ $service->kilometrage }}kilometers</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

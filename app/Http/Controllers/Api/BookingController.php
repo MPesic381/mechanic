@@ -31,13 +31,13 @@ class BookingController extends Controller
         $time = explode(':', $service->time_required);
         $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
     
-        Booking::create([
+        $booking = Booking::create([
             'car_id' => $request->car_id,
             'service_id' => $request->service_id,
             'start_time' => $start_time,
             'end_time' => $end_time
         ]);;
         
-        return response()->json('You successfully booked a service', 200);
+        return response()->json('You booked a service at ' . $booking->start_time, 200);
     }
 }

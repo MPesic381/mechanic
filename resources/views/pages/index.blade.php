@@ -25,7 +25,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="service">Service:</label>
-                                        <select id="service" class="form-control" name="service_id">
+                                        <select id="service_id" class="form-control" name="service_id">
                                         </select>
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@
             }
         });
 
-        $('#service').select2({
+        $('#service_id').select2({
             ajax: {
                 type: "GET",
                 url: window.location.protocol + "//" + window.location.host + "/api/services/",

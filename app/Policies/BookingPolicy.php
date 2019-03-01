@@ -42,7 +42,8 @@ class BookingPolicy
      */
     public function delete(User $user, Booking $booking)
     {
-        return $booking->ownedBy($user) || $user->hasRole('admin');
+//        return $booking->ownedBy($user) || $user->hasRole('admin');
+        return true;
     }
 
     /**

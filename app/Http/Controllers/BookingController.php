@@ -17,7 +17,7 @@ class BookingController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin')->except('index', 'show');
+        $this->middleware('role:admin')->except('index', 'show', 'destroy');
         $this->authorizeResource(Booking::class, 'booking');
         $this->service = new BookingService();
     }

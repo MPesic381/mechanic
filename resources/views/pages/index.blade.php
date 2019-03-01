@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    @if(auth()->user())
+    @if(auth()->user() && auth()->user()->hasRole('client'))
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

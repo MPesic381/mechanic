@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Car;
 use App\Http\Requests\CarStoreRequest;
 use App\Http\Requests\CarUpdateRequest;
+use App\Service;
 use App\Services\CarService;
 
 class CarController extends Controller

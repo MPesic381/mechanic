@@ -20,10 +20,19 @@ class AppServiceProvider extends ServiceProvider
         
         view()->composer('cars.partials.modal_service', function($view) {
             $car = request()->route()->parameters()['car'];
-            
-            $services = $car->works()->whereHas('service')->orderBy('kilometrage')->get()->unique('service_id');
+            $works = $car->works()->whereHas('service')->orderBy('kilometrage', 'desc')->get()->unique('service_id');
     
-            $view->withServices($services);
+            $lefts = [];
+    
+            foreach ($works as $work) {
+                $km = $work->service->warranty + $work->kilometrage - $car->kilometrage;
+                if ($km < 0) {
+                    $km = 0;
+                }
+                $lefts[$work->service->name] = $km;
+            }
+    
+            $view->withLefts($lefts);
         });
     }
 

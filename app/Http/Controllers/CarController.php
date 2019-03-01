@@ -67,7 +67,24 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return view('cars.show')->withCar($car);
+        $history = $car->works()->orderBy('serviced_at', 'DESC')->get();
+    
+        $lastWorks = $car->works()->whereHas('service')->orderBy('kilometrage', 'desc')->get()->unique('service_id');
+    
+        $lefts = [];
+    
+        foreach ($lastWorks as $work) {
+            $km = $work->service->warranty + $work->kilometrage - $car->kilometrage;
+            if ($km < 0) {
+                $km = 0;
+            }
+            $lefts[$work->service->name] = $km;
+        }
+        
+        return view('cars.show')
+            ->withCar($car)
+            ->withWorks($history)
+            ->withLefts($lefts);
     }
 
     /**

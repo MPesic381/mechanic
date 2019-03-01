@@ -7,7 +7,6 @@ use App\Car;
 use App\Http\Requests\BookingStoreRequest;
 use App\Services\BookingService;
 use App\Services\UserService;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller

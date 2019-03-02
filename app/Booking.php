@@ -5,34 +5,67 @@ namespace App;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Booking extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = [
         'car_id', 'service_id', 'start_time', 'end_time'
     ];
-
+    
+    /**
+     * Relationship with car model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function car()
     {
         return $this->belongsTo(Car::class);
     }
-
+    
+    /**
+     * Relationship with Service model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function service()
     {
         return $this->belongsTo(Service::class);
     }
-
+    
+    /**
+     * Check if given user owns booking
+     *
+     * @param $user
+     * @return bool
+     */
     public function ownedBy($user) {
         return $user->id == $this->car->user->id;
     }
     
+    /**
+     * Calculate the time when current booking service ends
+     *
+     * @param $start_time
+     * @param $service_id
+     * @return Carbon
+     */
     public static function ends($start_time, $service_id) {
         $start_time = new Carbon($start_time);
         $service = Service::findOrFail($service_id);
         $time = explode(':', $service->time_required);
         return $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
     }
-
+    
+    /**
+     * Check if booking schedule is available
+     *
+     * @param $start
+     * @param $duration
+     * @return bool
+     */
     protected static function isAvailable($start, $duration)
     {
         $end = (new Carbon($start))->addMinutes($duration);
@@ -44,7 +77,14 @@ class Booking extends Model
 
         return !count($booking);
     }
-
+    
+    /**
+     * Set the booking time
+     *
+     * @param $start
+     * @param $service_id
+     * @return Carbon
+     */
     public static function setAvailable($start, $service_id)
     {
         $time = explode(':', Service::findOrFail($service_id)->time_required);
@@ -79,7 +119,12 @@ class Booking extends Model
     }
     
     
-
+    /**
+     * Soft deletes the current booking
+     *
+     * @return bool|void|null
+     * @throws Exception
+     */
     public function delete()
     {
         if ( $this->start_time < Carbon::now()->addDay()) {

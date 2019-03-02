@@ -11,10 +11,16 @@ class Booking extends Model
 {
     use SoftDeletes;
     
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'car_id', 'service_id', 'start_time', 'end_time'
     ];
     
+    protected $dates = ['deleted_at'];
     /**
      * Relationship with car model
      *

@@ -29,6 +29,8 @@ class User extends Authenticatable
     ];
 
     /**
+     * Relantionship with roles
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function role()
@@ -37,13 +39,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Relationship with cars
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cars()
     {
         return $this->hasMany(Car::class);
     }
-
+    
+    /**
+     * Relationship with bookings
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
     public function bookings()
     {
         return $this->hasManyThrough(Booking::class, Car::class);
@@ -62,6 +71,7 @@ class User extends Authenticatable
 
     /**
      * Check if user have appropriate role
+     *
      * @param $role
      * @return bool
      */

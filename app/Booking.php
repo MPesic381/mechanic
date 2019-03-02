@@ -120,7 +120,8 @@ class Booking extends Model
     
     
     /**
-     * Soft deletes the current booking
+     * Soft deletes the current booking if schedule
+     * is not in the next 24 hrs
      *
      * @return bool|void|null
      * @throws Exception

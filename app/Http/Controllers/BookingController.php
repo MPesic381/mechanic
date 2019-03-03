@@ -52,7 +52,7 @@ class BookingController extends Controller
      */
     public function store(BookingStoreRequest $request)
     {
-        $start_time = Booking::setAvailable($request->start_time, $request->service_id);
+        $start_time = Booking::nextAvailable($request->start_time, $request->service_id);
         $end_time = Booking::ends($start_time, $request->service_id);
         
         $parameters = [

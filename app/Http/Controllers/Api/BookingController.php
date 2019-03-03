@@ -6,44 +6,61 @@ use App\Booking;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingCheckRequest;
 use App\Http\Requests\BookingStoreRequest;
-use App\Service;
+use App\Services\BookingService;
 use Carbon\Carbon;
 
 class BookingController extends Controller
 {
+    
+    protected $service;
+    
+    /**
+     * BookingController constructor.
+     */
+    public function __construct()
+    {
+        $this->service = new BookingService();
+    }
+    
     /**
      * Display a listing of the resource.
      *
-     * @param $start
-     * @param $service_id
+     * @param BookingCheckRequest $request
      * @return \Illuminate\Http\Response
      */
     public function availabilityCheck(BookingCheckRequest $request)
     {
-        $book =  Booking::setAvailable($request->start_time, $request->service_id);
+        $book =  Booking::nextAvailable($request->start_time, $request->service_id);
 
         return response()->json('Next available time for your service is at ' . $book, 200);
     }
     
+    /**
+     * Checking availability and storing the booking
+     * into the database if time is available
+     *
+     * @param BookingStoreRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(BookingStoreRequest $request)
     {
-        $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
+        $start_time = new Carbon(Booking::nextAvailable($request->start_time, $request->service_id));
         
         if (new Carbon($request->start_time) != $start_time) {
             return response()->json('The booking time you choosen is not available. Next available is ' . $start_time, 200);
         }
         
-        $service = Service::findOrFail($request->service_id);
-        $time = explode(':', $service->time_required);
-        $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);
-    
-        $booking = Booking::create([
+        $end_time = Booking::ends($request->start_time, $request->service_id);
+        
+        $parameters = [
             'car_id' => $request->car_id,
             'service_id' => $request->service_id,
             'start_time' => $start_time,
             'end_time' => $end_time
-        ]);;
+        ];
         
-        return response()->json('You booked a service at ' . $booking->start_time, 200);
+        $this->service->make($parameters);
+        
+        return response()->json('You booked a service at ' . $start_time, 200);
     }
 }

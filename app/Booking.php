@@ -91,7 +91,7 @@ class Booking extends Model
      * @param $service_id
      * @return Carbon
      */
-    public static function setAvailable($start, $service_id)
+    public static function nextAvailable($start, $service_id)
     {
         $time = explode(':', Service::findOrFail($service_id)->time_required);
 

@@ -120,16 +120,32 @@
         });
 
         $('#checkTime').click(function(e) {
-
             e.preventDefault();
+            bookingForm = $('#bookingForm')
 
             $.ajax({
-                url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/" + $('#dateTimeValue').val() + "/" + $('#service_id').val(),
+                url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/",
                 method: "GET",
+                data: bookingForm.serialize(),
 
                 success:function(response) {
-                    console.log(response)
-                    $('#dateTimeValue').val(response);
+                    $('#form-info').html(
+                        '<div class="alert alert-info">' + response + '</div>'
+                    )
+                },
+
+                error: function (xhr) {
+                    var errors = (JSON.parse(xhr.responseText).errors);
+
+                    errorsHtml = '<div class="alert alert-danger"><ul>';
+
+                    $.each( errors, function( key, value ) {
+                        errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                    });
+
+                    errorsHtml += '</ul></div>';
+
+                    $('#form-info').html( errorsHtml )
                 }
             })
         })

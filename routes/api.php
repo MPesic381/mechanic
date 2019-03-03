@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/availabilityCheck/{start}/{service}', 'Api\BookingController@checkAvailable');
+Route::get('/availabilityCheck/', 'Api\BookingController@availabilityCheck');
 //Route::post('booking', 'Api\BookingController@store');
 //Route::get('/services', 'Api\ServiceController@index');
 //Route::post('/register', 'Api\AuthController@register');

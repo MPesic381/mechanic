@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Booking;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BookingCheckRequest;
 use App\Http\Requests\BookingStoreRequest;
 use App\Service;
 use Carbon\Carbon;
@@ -17,16 +18,21 @@ class BookingController extends Controller
      * @param $service_id
      * @return \Illuminate\Http\Response
      */
-    public function checkAvailable($start, $service_id)
+    public function availabilityCheck(BookingCheckRequest $request)
     {
-        $book =  Booking::setAvailable($start, $service_id);
+        $book =  Booking::setAvailable($request->start_time, $request->service_id);
 
-        return response()->json($book, 200);
+        return response()->json('Next available time for your service is at ' . $book, 200);
     }
     
     public function store(BookingStoreRequest $request)
     {
         $start_time = new Carbon(Booking::setAvailable($request->start_time, $request->service_id));
+        
+        if (new Carbon($request->start_time) != $start_time) {
+            return response()->json('The booking time you choosen is not available. Next available is ' . $start_time, 200);
+        }
+        
         $service = Service::findOrFail($request->service_id);
         $time = explode(':', $service->time_required);
         $end_time = $start_time->copy()->addHours($time[0])->addMinutes($time[1]);

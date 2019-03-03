@@ -15,11 +15,14 @@ class CarController extends Controller
     
     public function index()
     {
-        $user = request('user_id');
-        $model = request('model');
-    
-        $cars = Car::where('user_id', $user)->where('model', 'like', $model . '%')->get();
-    
+        $user = request()->user();
+        
+        $cars = $user->cars()->where(function ($q) {
+            $q->where('model', 'like', '%' . request('parameter') . '%')
+            ->orWhere('manufacturer', 'like', '%' . request('parameter') . '%')
+            ->orWhere('plate', 'like', '%' . request('parameter') . '%');
+        })->get();
+        
         return response()->json($cars, 200);
     }
     

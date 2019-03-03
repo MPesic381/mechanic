@@ -76,7 +76,7 @@
                 data: function (params) {
                     return {
                         user_id: $("#users").val(),
-                        plate: params.term
+                        parameter: params.term
                     };
                 },
                 processResults: function (data) {

@@ -172,6 +172,7 @@
                 },
 
                 error: function (xhr) {
+                    console.log(xhr)
                     var errors = (JSON.parse(xhr.responseText).errors);
 
                     errorsHtml = '<div class="alert alert-danger"><ul>';

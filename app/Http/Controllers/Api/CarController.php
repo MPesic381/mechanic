@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Car;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateKilometrageRequest;
+use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
@@ -13,14 +14,14 @@ class CarController extends Controller
         $this->middleware('auth');
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $user = request()->user();
+        $user = $request->user();
         
-        $cars = $user->cars()->where(function ($q) {
-            $q->where('model', 'like', '%' . request('parameter') . '%')
-            ->orWhere('manufacturer', 'like', '%' . request('parameter') . '%')
-            ->orWhere('plate', 'like', '%' . request('parameter') . '%');
+        $cars = $user->cars()->where(function ($query) use ($request) {
+            $query->where('model', 'like', '%' . $request->parameter . '%')
+            ->orWhere('manufacturer', 'like', '%' . $request->parameter . '%')
+            ->orWhere('plate', 'like', '%' . $request->parameter . '%');
         })->get();
         
         return response()->json($cars, 200);

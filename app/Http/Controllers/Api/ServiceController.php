@@ -22,7 +22,7 @@ class ServiceController extends Controller
     {
         $name = request('name');
         
-        $services = Service::where('name', 'like', $name . '%')->get();
+        $services = Service::where('name', 'like', '%' . $name . '%')->get();
 
         return response()->json($services, 200);
     }

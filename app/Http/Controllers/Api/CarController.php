@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
+    /**
+     * CarController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth');

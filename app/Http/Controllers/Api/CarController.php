@@ -14,6 +14,13 @@ class CarController extends Controller
         $this->middleware('auth');
     }
     
+    /**
+     * Return a collection of cars associated with
+     * a logged user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
         $user = $request->user();
@@ -27,6 +34,12 @@ class CarController extends Controller
         return response()->json($cars, 200);
     }
     
+    /**
+     * Update kilometrage of a specific car
+     *
+     * @param UpdateKilometrageRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateKilometrage(UpdateKilometrageRequest $request)
     {
         $car = Car::find(request()->route()->parameters()['car']);

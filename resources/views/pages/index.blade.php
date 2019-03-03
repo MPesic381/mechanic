@@ -75,7 +75,6 @@
                 url: window.location.protocol + "//" + window.location.host + "/api/cars/?user_id=@if(auth()->user()) {{ auth()->user()->id }} @endif",
                 data: function (params) {
                     return {
-                        user_id: $("#users").val(),
                         parameter: params.term
                     };
                 },

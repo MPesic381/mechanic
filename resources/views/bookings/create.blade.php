@@ -137,6 +137,14 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="note">Note:</label>
+                            <textarea name="note" id="note"  class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <h4>Date & time</h4>
                         <hr class="mb-4">
@@ -165,6 +173,11 @@
                         <input type="hidden" id="bookWithRegister" name="bookWithRegister" value="{{ old('bookWithRegister', 0) }}">
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="form-info" class="form-group"></div>
+                    </div>
+                </div>
             </form>
             @include('layout.errors')
         </div>
@@ -173,11 +186,11 @@
                 <div class="row">
                     <div class="card">
                         <div class="card-body">
-                                <h4 class="card-title">Create new client</h4>
-                                <p class="card-text">If you want to create new client you can do it from here</p>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary" id="btnCreateNewUser">Create new client</button>
-                                </div>
+                            <h4 class="card-title">Create new client</h4>
+                            <p class="card-text">If you want to create new client you can do it from here</p>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" id="btnCreateNewUser">Create new client</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -218,11 +231,10 @@
             $('#cars').select2({
                 ajax: {
                     type: "GET",
-                    url: window.location.protocol + "//" + window.location.host + "/api/cars/",
+                    url: window.location.protocol + "//" + window.location.host + "/api/cars/?user_id=@if(auth()->user()) {{ auth()->user()->id }} @endif",
                     data: function (params) {
                         return {
-                            user_id: $("#users").val(),
-                            plate: params.term
+                            parameter: params.term
                         };
                     },
                     processResults: function (data) {
@@ -271,16 +283,32 @@
             });
 
             $('#checkTime').click(function(e) {
-
                 e.preventDefault();
+                bookingForm = $('#bookingForm')
 
                 $.ajax({
-                    url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/" + $('#dateTimeValue').val() + "/" + $('#service_id').val(),
+                    url: window.location.protocol + "//" + window.location.host + "/api/availabilityCheck/",
                     method: "GET",
+                    data: bookingForm.serialize(),
 
                     success:function(response) {
-                        console.log(response)
-                        $('#dateTimeValue').val(response);
+                        $('#form-info').html(
+                            '<div class="alert alert-info">' + response + '</div>'
+                        )
+                    },
+
+                    error: function (xhr) {
+                        var errors = (JSON.parse(xhr.responseText).errors);
+
+                        errorsHtml = '<div class="alert alert-danger"><ul>';
+
+                        $.each( errors, function( key, value ) {
+                            errorsHtml += '<li>'+ value + '</li>'; //showing only the first error.
+                        });
+
+                        errorsHtml += '</ul></div>';
+
+                        $('#form-info').html( errorsHtml )
                     }
                 })
             })

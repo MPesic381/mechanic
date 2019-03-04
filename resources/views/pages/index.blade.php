@@ -48,8 +48,16 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="note">Note:</label>
+                                        <textarea name="note" id="note"  class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-4">
-                                    <div class="control-group">
+                                    <div class="form-group">
                                         <button class="btn btn-primary" id="submitBooking">Book service</button>
                                     </div>
                                 </div>

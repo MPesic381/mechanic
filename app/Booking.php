@@ -17,7 +17,7 @@ class Booking extends Model
      * @var array
      */
     protected $fillable = [
-        'car_id', 'service_id', 'start_time', 'end_time'
+        'car_id', 'service_id', 'start_time', 'end_time', 'note'
     ];
     
     protected $dates = ['deleted_at'];

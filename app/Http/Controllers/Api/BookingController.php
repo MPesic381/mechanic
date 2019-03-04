@@ -56,7 +56,8 @@ class BookingController extends Controller
             'car_id' => $request->car_id,
             'service_id' => $request->service_id,
             'start_time' => $start_time,
-            'end_time' => $end_time
+            'end_time' => $end_time,
+            'note' => $request->note,
         ];
         
         $this->service->make($parameters);

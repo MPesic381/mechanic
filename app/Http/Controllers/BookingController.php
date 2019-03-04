@@ -7,6 +7,7 @@ use App\Car;
 use App\Http\Requests\BookingStoreRequest;
 use App\Services\BookingService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
@@ -53,17 +54,21 @@ class BookingController extends Controller
     public function store(BookingStoreRequest $request)
     {
         $start_time = Booking::nextAvailable($request->start_time, $request->service_id);
+    
+        if (new Carbon($request->start_time) != $start_time) {
+            return response()->json('The booking time you choosen is not available. Next available is ' . $start_time, 200);
+        }
+        
         $end_time = Booking::ends($start_time, $request->service_id);
         
         $parameters = [
             'car_id' => $request->car_id,
             'service_id' => $request->service_id,
             'start_time' => $start_time,
-            'end_time' => $end_time
+            'end_time' => $end_time,
+            'note' => $request->note
         ];
 
-        $this->service->make($parameters);
-        
         if($request->bookWithRegister) {
             DB::beginTransaction();
             

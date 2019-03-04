@@ -15,7 +15,7 @@ class BookingStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return request()->user()->id === \App\Car::find(request()->car_id)->user_id;
+        return request()->user()->id === \App\Car::find(request()->car_id)->user_id || request()->user()->hasRole('admin');
     }
 
     /**

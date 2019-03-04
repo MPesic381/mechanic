@@ -115,7 +115,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="client">Client:</label>
-                            <select id="users" class="form-control">
+                            <select id="users" class="form-control" name="user_id">
                             </select>
                         </div>
                     </div>

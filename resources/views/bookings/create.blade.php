@@ -203,6 +203,7 @@
     <script>
         $(function () {
 
+
             $('#users').select2({
                 ajax: {
                     type: "GET",
@@ -231,9 +232,10 @@
             $('#cars').select2({
                 ajax: {
                     type: "GET",
-                    url: window.location.protocol + "//" + window.location.host + "/api/cars/?user_id=@if(auth()->user()) {{ auth()->user()->id }} @endif",
+                    url: window.location.protocol + "//" + window.location.host + "/api/cars/",
                     data: function (params) {
                         return {
+                            user_id: $("#users").val(),
                             parameter: params.term
                         };
                     },

@@ -26,7 +26,9 @@ class CarController extends Controller
      */
     public function index(Request $request)
     {
-        $user = $request->user() ?? \App\User::find($request->user_id);
+        $user = $request->user() ?? \App\User::find(2);
+        
+        $user = $request->user_id ? \App\User::find($request->user_id) : $request->user();
         
         $cars = $user->cars()->where(function ($query) use ($request) {
             $query->where('model', 'like', '%' . $request->parameter . '%')

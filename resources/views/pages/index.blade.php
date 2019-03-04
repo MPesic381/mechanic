@@ -80,12 +80,13 @@
         $('#cars').select2({
             ajax: {
                 type: "GET",
-                url: window.location.protocol + "//" + window.location.host + "/api/cars/?user_id=@if(auth()->user()) {{ auth()->user()->id }} @endif",
+                url: window.location.protocol + "//" + window.location.host + "/api/cars",
                 data: function (params) {
                     return {
                         parameter: params.term
                     };
                 },
+
                 processResults: function (data) {
                     var len = Object.keys(data).length;
                     if (len > 0) {

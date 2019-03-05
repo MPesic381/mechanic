@@ -7,6 +7,17 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Booking
+ * @package App
+ *
+ * @property int $id
+ * @property int $car_id
+ * @property int $service_id
+ * @property Carbon $start_time
+ * @property Carbon $end_time
+ * @property string $note
+ */
 class Booking extends Model
 {
     use SoftDeletes;
@@ -20,6 +31,11 @@ class Booking extends Model
         'car_id', 'service_id', 'start_time', 'end_time', 'note'
     ];
     
+    /**
+     * Carbon instance
+     *
+     * @var array
+     */
     protected $dates = ['deleted_at'];
     /**
      * Relationship with car model
@@ -123,7 +139,6 @@ class Booking extends Model
 
         return new Carbon($bookings[count($bookings) - 1]->end_time);
     }
-    
     
     /**
      * Soft deletes the current booking if schedule

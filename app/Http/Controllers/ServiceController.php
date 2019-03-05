@@ -9,6 +9,9 @@ use App\Services\ServiceService;
 
 class ServiceController extends Controller
 {
+    /**
+     * @var ServiceService
+     */
     protected $service;
     
     /**

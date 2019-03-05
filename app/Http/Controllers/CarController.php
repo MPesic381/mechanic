@@ -10,6 +10,9 @@ use App\Services\CarService;
 
 class CarController extends Controller
 {
+    /**
+     * @var CarService
+     */
     protected $service;
 
     /**

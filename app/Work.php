@@ -2,8 +2,19 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Work
+ *
+ * @package App
+ * @property int $id
+ * @property int $car_id
+ * @property int $service_id
+ * @property int $kilometrage
+ * @property Carbon $serviced_at
+ */
 class Work extends Model
 {
     /**

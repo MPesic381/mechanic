@@ -11,7 +11,9 @@ use Carbon\Carbon;
 
 class BookingController extends Controller
 {
-    
+    /**
+     * @var BookingService
+     */
     protected $service;
     
     /**

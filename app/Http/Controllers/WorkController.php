@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class WorkController extends Controller
 {
+    /**
+     * WorkController constructor.
+     */
     public function __construct()
     {
         $this->authorizeResource(Work::class, 'work');

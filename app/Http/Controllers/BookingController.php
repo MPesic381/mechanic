@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class BookingController extends Controller
 {
+    /**
+     * @var BookingService
+     */
     protected $service;
     
     public function __construct()

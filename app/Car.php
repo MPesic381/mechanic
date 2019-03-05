@@ -5,6 +5,19 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Car
+ *
+ * @package App
+ * @property int $id
+ * @property string $plate
+ * @property string $manufacturer
+ * @property string $model
+ * @property int $year
+ * @property int $kilometrage
+ * @property int $hp
+ * @property int $cc
+ */
 class Car extends Model
 {
     use SoftDeletes;
@@ -17,7 +30,12 @@ class Car extends Model
     protected $fillable = [
         'plate', 'manufacturer', 'model', 'year', 'kilometrage', 'hp', 'cc'
     ];
-
+    
+    /**
+     * Carbon instance
+     *
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 
     /**

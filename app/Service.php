@@ -5,6 +5,16 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Service
+ *
+ * @package App
+ * @property int $id
+ * @property string $name
+ * @property string $time_required
+ * @property int $warranty
+ * @property int $cost
+ */
 class Service extends Model
 {
     use SoftDeletes;
@@ -17,7 +27,12 @@ class Service extends Model
     protected $fillable = [
         'name', 'time_required', 'warranty', 'cost',
     ];
-
+    
+    /**
+     * Carbon instance
+     *
+     * @var array
+     */
     protected $dates = ['deleted_at'];
     
     /**

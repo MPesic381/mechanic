@@ -101,7 +101,9 @@ class Booking extends Model
     }
     
     /**
-     * Set the booking time
+     * Check if booking time is available and
+     * inside the working hours and returns the next
+     * available time for booking.
      *
      * @param $start
      * @param $service_id
@@ -109,11 +111,25 @@ class Booking extends Model
      */
     public static function nextAvailable($start, $service_id)
     {
+        $open = Carbon::createFromTimeString(Carbon::createFromTimeString($start)->toDateString() . config('mechanic.open_time'));
+        $close = Carbon::createFromTimeString(Carbon::createFromTimeString($start)->toDateString() . config('mechanic.close_time'));
+        
         $time = explode(':', Service::findOrFail($service_id)->time_required);
-
         $duration = $time[0] * 60 + $time[1];
+    
+        $suggestedTimeEnd = Carbon::createFromTimeString($start)->addMinutes($duration);
+        $suggestedTime = Carbon::createFromTimeString($start);
+        
+        if ($suggestedTime->lt($open)) {
+            return self::nextAvailable($open->toDateTimeString(), $service_id);
+        } elseif ($suggestedTime->gt($close)) {
+            return self::nextAvailable($open->addDay()->toDateTimeString(), $service_id);
+        } elseif ($suggestedTimeEnd->gt($close)) {
+            return self::nextAvailable($open->addDay()->toDateTimeString(), $service_id);
+        }
+        
 
-        if (self::isAvailable($start, $duration)) {
+        if (self::isAvailable($suggestedTime->toDateTimeString(), $duration)) {
             return $start;
         }
 
@@ -133,6 +149,15 @@ class Booking extends Model
             $difference = $endTime->diffInMinutes($startTime);
 
             if ($difference > $duration) {
+                $close = Carbon::createFromTimeString($endTime->toDateString() . config('mechanic.open_time'));
+                $open = Carbon::createFromTimeString($endTime->toDateString() . config('mechanic.close_time'))->addDay();
+    
+                if($endTime->between($close, $open)) {
+                    $suggestedTime = $open->add($endTime->diffAsCarbonInterval($close));
+                    
+                    return self::nextAvailable($suggestedTime->toDateTimeString(), $service_id);
+                }
+                
                 return $bookings[$i]->end_time;
             }
         }

@@ -44,6 +44,10 @@ class BookingController extends Controller
      */
     public function store(BookingStoreRequest $request)
     {
+        if ($request->user()->id != \App\Car::find($request->car_id)->user_id) {
+            return response()->json('This is not your car', 200);
+        }
+        
         $start_time = new Carbon(Booking::nextAvailable($request->start_time, $request->service_id));
         
         if (new Carbon($request->start_time) != $start_time) {

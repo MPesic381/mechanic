@@ -55,8 +55,8 @@ class BookingController extends Controller
     {
         $start_time = Booking::nextAvailable($request->start_time, $request->service_id);
     
-        if (new Carbon($request->start_time) != $start_time) {
-            return response()->json('The booking time you choosen is not available. Next available is ' . $start_time, 200);
+        if ($request->start_time != $start_time) {
+            return back()->withErrors('The booking time you choosen is not available. Next available is ' . $start_time);
         }
         
         $end_time = Booking::ends($start_time, $request->service_id);

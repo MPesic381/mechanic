@@ -24,7 +24,7 @@
         "vue-template-compiler": "^2.6.0"
     },
     "dependencies": {
-        "moment": "^2.24.0",
+        "moment": "^2.29.2",
         "moment-timezone": "^0.5.23",
         "npm": "^6.7.0"
     }
